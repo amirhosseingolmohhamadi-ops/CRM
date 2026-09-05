@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-time-theme="morning">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سامانه جامع املاک کوروش | سیستم هوشمند و داینامیک</title>
+
+  <!-- فونت وزیرمتن -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="time-reactive-body">
+
+  <div class="sky-atmosphere-glow" id="skyAtmosphere"></div>
+
+  <div class="vintage-frame">
+
+    <!-- سایدبار ناوبری و ویجت ماژولار زمان -->
+    <aside class="storybook-sidebar" id="mainSidebar">
+      <div class="story-brand">
+        <div class="stamp-avatar">🏢</div>
+        <div class="brand-text">
+          <h2>کوروش</h2>
+          <span>عملیات و فروش املاک</span>
+        </div>
+      </div>
+
+      <nav class="story-nav">
+        <button class="nav-tab active" data-view="dashboard">
+          <span class="icon">📊</span>
+          <span>داشبورد جامع</span>
+        </button>
+        <button class="nav-tab" data-view="timer-section">
+          <span class="icon">⏳</span>
+          <span>تایمر حرفه‌ای</span>
+        </button>
+        <button class="nav-tab" data-view="properties">
+          <span class="icon">🏘️</span>
+          <span>املاک و فایلینگ</span>
+        </button>
+        <button class="nav-tab" data-view="campaigns">
+          <span class="icon">📢</span>
+          <span>کمپین‌های جذب</span>
+        </button>
+        <button class="nav-tab" data-view="customers">
+          <span class="icon">👥</span>
+          <span>دفتر متقاضیان</span>
+        </button>
+        <button class="nav-tab" data-view="contracts">
+          <span class="icon">✒️</span>
+          <span>دفتر اسناد و قرارداد</span>
+        </button>
+        <button class="nav-tab" data-view="settings">
+          <span class="icon">⚙️</span>
+          <span>تنظیمات و تغییر تم</span>
+        </button>
+      </nav>
+
+      <!-- ویجت سه‌تایی ماژولار هماهنگ با تم -->
+      <div class="modular-clock-card">
+        <div class="modular-top-row">
+          <div class="analog-dial-box">
+            <div class="analog-clock" id="analogClock">
+              <div class="dial-track"></div>
+              <div class="hand hour-hand" id="analogHour"></div>
+              <div class="hand minute-hand" id="analogMin"></div>
+              <div class="hand second-hand" id="analogSec"></div>
+              <div class="dial-center-pin"></div>
+            </div>
+          </div>
+
+          <div class="calendar-theme-tile">
+            <span class="cal-day-name" id="modDayName">شنبه</span>
+            <span class="cal-day-num" id="modDayNum">۱۵</span>
+          </div>
+        </div>
+
+        <div class="daytime-status-tile" id="daytimePhaseTile">
+          <div class="phase-meta">
+            <span class="phase-sub">نوبت زمانی روز</span>
+            <strong class="phase-main" id="daytimePhaseLabel">ظهر 🌤️</strong>
+          </div>
+          <span class="phase-glow-dot"></span>
+        </div>
+      </div>
+
+      <!-- شیفت کاری -->
+      <div class="illustrated-attendance-widget">
+        <div class="badge-tag-vintage">شیفت کاری هوشمند</div>
+        <h4>کنترل ورود و خروج</h4>
+        <div class="attendance-times">
+          <div class="att-row"><small>ورود ثبت‌شده:</small> <strong id="workInTime">۰۸:۱۵:۲۰</strong></div>
+          <div class="att-row"><small>خروج پیش‌بینی:</small> <strong id="workOutTime">۱۸:۳۰:۰۰</strong></div>
+        </div>
+        <button class="btn-punch-action" id="btnClockInOut">ثبت وضعیت خروج ⏱️</button>
+      </div>
+
+      <div class="sidebar-stamp-seal">
+        <span>سامانه تضمین اسناد رسمی کوروش</span>
+      </div>
+    </aside>
+
+    <!-- کادر اصلی صفحه -->
+    <main class="story-viewport">
+
+      <!-- تاپ‌بار چسبان ثابت با تراز ستونی دقیق -->
+      <header class="vintage-topbar sticky-topbar">
+        
+        <div class="user-greeting-box" id="userProfileWidget">
+          <div class="user-seal">ک</div>
+          <div class="user-titles">
+            <span class="u-name">کوروش بزرگ</span>
+            <span class="u-badge">مدیریت عالی آژانس</span>
+          </div>
+          <span class="date-scroll" id="smartDateDisplay">در حال دریافت تاریخ...</span>
+        </div>
+
+        <!-- ستون مرکز برای داینامیک آیلند -->
+        <div class="topbar-center-slot">
+          <div class="apple-true-island" id="smartIsland" data-state="idle">
+            
+            <svg class="island-timer-svg" width="100%" height="100%">
+              <rect class="timer-progress-track" x="1.5" y="1.5" rx="17.5" ry="17.5"></rect>
+            </svg>
+
+            <!-- ۱. حالت بیکار: ساعت ورق‌زن LTR -->
+            <div class="island-idle-view" dir="ltr">
+              <span class="island-lock-ico">🔒</span>
+              
+              <div class="flip-clock-mini">
+                <div class="flip-card">
+                  <span class="flip-num" id="flipHours">11</span>
+                  <span class="flip-ampm" id="flipAmPm">PM</span>
+                  <div class="flip-crease"></div>
+                </div>
+                <span class="flip-separator">:</span>
+                <div class="flip-card">
+                  <span class="flip-num" id="flipMinutes">45</span>
+                  <div class="flip-crease"></div>
+                </div>
+              </div>
+
+              <span class="island-status-dot green"></span>
+            </div>
+
+            <!-- ۲. حالت فعال تایمر -->
+            <div class="island-timer-active-view" dir="ltr">
+              <div class="mini-island-hourglass">
+                <svg viewBox="0 0 24 32" class="hourglass-vector-svg">
+                  <path d="M 4 2 L 20 2 C 20 10 14 14 14 16 C 14 18 20 22 20 30 L 4 30 C 4 22 10 18 10 16 C 10 14 4 10 4 2 Z" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linejoin="round"/>
+                  <path id="svgSandTop" d="M 5 6 L 19 6 C 18 11 13 15 12 16 C 11 15 6 11 5 6 Z" fill="#ff3b30"/>
+                  <line x1="12" y1="16" x2="12" y2="28" stroke="#ff3b30" stroke-width="1.5" stroke-dasharray="2,2"/>
+                  <path id="svgSandBottom" d="M 6 29 L 18 29 C 17 26 14 24 12 24 C 10 24 7 26 6 29 Z" fill="#ff3b30"/>
+                </svg>
+              </div>
+
+              <div class="timer-digits-box" dir="ltr">
+                <span class="timer-countdown-text" id="timerDisplay">00:20</span>
+                <small id="timerSubMsg">تایمر فعال</small>
+              </div>
+
+              <button class="btn-timer-cancel" id="btnCancelTimer" title="لغو تایمر">✕</button>
+            </div>
+
+            <!-- ۳. سینی اخبار -->
+            <div class="island-news-tray">
+              <div class="news-tray-header">
+                <span class="news-led"></span>
+                <strong>رویدادها و اخبار مهم سامانه</strong>
+              </div>
+
+              <div class="news-scroll-body">
+                <div class="news-item-row alert-news">
+                  <span class="n-tag">فوری</span>
+                  <div class="n-meta">
+                    <strong>جلسه نهایی پنت‌هاوس الهیه</strong>
+                    <p>مبایعه‌نامه ۱۵۵ میلیارد تومانی آماده امضا در اتاق VIP ساعت ۱۸:۳۰</p>
+                  </div>
+                </div>
+
+                <div class="news-item-row success-news">
+                  <span class="n-tag green">استعلام</span>
+                  <div class="n-meta">
+                    <strong>سند تک‌برگ ملک فرشته</strong>
+                    <p>تاییدیه رسمی ثبت اسناد و املاک با شناسه رهگیری #9042 دریافت شد.</p>
+                  </div>
+                </div>
+
+                <div class="news-item-row info-news">
+                  <span class="n-tag blue">کمپین</span>
+                  <div class="n-meta">
+                    <strong>کمپین بازگشت خریداران ۳۰ روزه</strong>
+                    <p>۶۹۶ پیامک ارسال شد • ۲۵ متقاضی جدید امروز برای بازدید مراجعه کردند.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="topbar-left-controls">
+          <div class="retro-search-input">
+            <span class="search-glyph">🔍</span>
+            <input type="text" id="globalSearchInput" placeholder="جستجوی پلاک ثبتی، نام خریدار... (Ctrl + K)">
+            <span class="key-combo">⌘ K</span>
+          </div>
+
+          <button class="vintage-call-btn" id="btnSimulateCall">
+            <span class="bell-anim">📞</span>
+            <span>تماس ورودی</span>
+          </button>
+        </div>
+
+      </header>
+
+      <!-- پنل ۱: داشبورد جامع -->
+      <div class="view-panel active-panel" data-view="dashboard">
+        
+        <section class="stamped-kpi-row">
+          <div class="stamp-kpi-card">
+            <div class="sk-header">
+              <span>گردش مالی قراردادها</span>
+              <span class="sk-pill brick">+۲۸.۴٪</span>
+            </div>
+            <div class="sk-number">۳۸۴,۰۰۰,۰۰۰,۰۰۰ <small>تومان</small></div>
+            <span class="sk-note">کمیسیون تثبیت‌شده: ۲.۹ میلیارد تومان</span>
+          </div>
+
+          <div class="stamp-kpi-card">
+            <div class="sk-header">
+              <span>املاک در چرخه معرفی</span>
+              <span class="sk-pill mustard">۱,۴۸۲ واحد</span>
+            </div>
+            <div class="sk-number">۴۲ <small>ملک نوساز ثبت‌شده</small></div>
+            <span class="sk-note">همگی دارای سند تک‌برگ رسمی</span>
+          </div>
+
+          <div class="stamp-kpi-card">
+            <div class="sk-header">
+              <span>خریداران در صف قرارداد</span>
+              <span class="sk-pill olive">۸۴۲ نفر</span>
+            </div>
+            <div class="sk-number">۱۹ <small>نشست نهایی امروز</small></div>
+            <span class="sk-note">۵ مبایعه‌نامه آماده امضا</span>
+          </div>
+        </section>
+
+        <section class="illustrated-stage-grid">
+          
+          <div class="canvas-vintage-panel">
+            <div class="panel-narrative-bar">
+              <div>
+                <h3>روند ماهانه حجم معاملات و جذب نقدینگی</h3>
+                <p>ستون‌ها را لمس کنید تا ریز مبالغ و تعداد قراردادها نمایش داده شود</p>
+              </div>
+              <div class="narrative-controls">
+                <button class="story-btn active">ماهانه</button>
+                <button class="story-btn">هفتگی</button>
+              </div>
+            </div>
+
+            <div class="chart-stage-wrapper">
+              <div class="chart-grid-backdrop">
+                <div class="grid-line" data-val="۴۰۰ م.ت"></div>
+                <div class="grid-line" data-val="۳۰۰ م.ت"></div>
+                <div class="grid-line" data-val="۲۰۰ م.ت"></div>
+                <div class="grid-line" data-val="۱۰۰ م.ت"></div>
+                <div class="grid-line" data-val="۰"></div>
+              </div>
+
+              <div class="dynamic-chart-bars">
+                <div class="d-bar-slot" data-amount="۱۸۰ میلیارد" data-deals="۱۲ قرارداد">
+                  <span class="bar-tooltip">۱۸۰ م.ت</span>
+                  <div class="d-bar-tube"><div class="d-fill" style="height: 45%;"></div></div>
+                  <span class="month-label">فروردین</span>
+                </div>
+
+                <div class="d-bar-slot" data-amount="۲۴۰ میلیارد" data-deals="۱۶ قرارداد">
+                  <span class="bar-tooltip">۲۴۰ م.ت</span>
+                  <div class="d-bar-tube"><div class="d-fill" style="height: 60%;"></div></div>
+                  <span class="month-label">اردیبهشت</span>
+                </div>
+
+                <div class="d-bar-slot" data-amount="۳۱۰ میلیارد" data-deals="۲۱ قرارداد">
+                  <span class="bar-tooltip">۳۱۰ م.ت</span>
+                  <div class="d-bar-tube"><div class="d-fill" style="height: 78%;"></div></div>
+                  <span class="month-label">خرداد</span>
+                </div>
+
+                <div class="d-bar-slot" data-amount="۲۱۵ میلیارد" data-deals="۱۴ قرارداد">
+                  <span class="bar-tooltip">۲۱۵ م.ت</span>
+                  <div class="d-bar-tube"><div class="d-fill" style="height: 54%;"></div></div>
+                  <span class="month-label">تیر</span>
+                </div>
+
+                <div class="d-bar-slot active-high" data-amount="۳۸۴ میلیارد" data-deals="۲۸ قرارداد">
+                  <div class="record-bubble">رکورد سال 🔥 ۳۸۴ م.ت</div>
+                  <div class="d-bar-tube"><div class="d-fill active" style="height: 94%;"></div></div>
+                  <span class="month-label active">مرداد</span>
+                </div>
+
+                <div class="d-bar-slot" data-amount="۲۹۰ میلیارد" data-deals="۱۹ قرارداد">
+                  <span class="bar-tooltip">۲۹۰ م.ت</span>
+                  <div class="d-bar-tube"><div class="d-fill" style="height: 72%;"></div></div>
+                  <span class="month-label">شهریور</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="canvas-bottom-legend">
+              <div class="legend-item"><small>بالاترین نرخ جذب</small><strong>پنت‌هاوس‌های منطقه ۱</strong></div>
+              <div class="legend-item"><small>میانگین دوره معامله</small><strong class="highlight-txt">۱۸ روز کاری</strong></div>
+              <div class="legend-item"><small>ضریب تبدیل کل</small><strong>۴.۲٪ رشد ماهانه</strong></div>
+            </div>
+          </div>
+
+          <div class="storyline-scroll-panel">
+            <div class="storyline-head">
+              <h3>مراحل پیگیری پرونده‌های شاخص</h3>
+              <span class="scroll-tag">۵ معامله قطعی</span>
+            </div>
+
+            <div class="timeline-tree">
+              <div class="tree-node done">
+                <span class="node-bullet">۱</span>
+                <div class="node-content">
+                  <strong>پنت‌هاوس فرشته (دکتر فرهمند)</strong>
+                  <p>مذاکره اولیه انجام شد • پیشنهاد ۱۵۵ میلیارد ثبت گردید.</p>
+                  <time>ساعت ۱۰:۱۵</time>
+                </div>
+              </div>
+
+              <div class="tree-node done">
+                <span class="node-bullet">۲</span>
+                <div class="node-content">
+                  <strong>استعلام سند و شهرداری</strong>
+                  <p>تاییدیه سند تک‌برگ بدون معارض دریافت شد.</p>
+                  <time>ساعت ۱۲:۴۰</time>
+                </div>
+              </div>
+
+              <div class="tree-node active">
+                <span class="node-bullet">۳</span>
+                <div class="node-content">
+                  <strong>تنظیم نهایی مبایعه‌نامه</strong>
+                  <p>حضور طرفین در اتاق جلسات برای امضای رسمی.</p>
+                  <time>امروز ساعت ۱۸:۳۰</time>
+                </div>
+              </div>
+
+              <div class="tree-node">
+                <span class="node-bullet">۴</span>
+                <div class="node-content">
+                  <strong>انتقال قطعی و تحویل کلید</strong>
+                  <p>مراجعه به دفترخانه اسناد رسمی شماره ۱۸۴.</p>
+                  <time>شنبه آینده</time>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="vintage-contracts-ledger">
+          <div class="ledger-top-line">
+            <h3>دفتر رسمی مبادلات و توافق‌نامه‌های جاری</h3>
+            <span class="seal-number">شماره دفتر اندیکاتور: ۱۴۰۵/۰۶/۱۲-KB</span>
+          </div>
+
+          <div class="ledger-table-wrap">
+            <table class="ink-table">
+              <thead>
+                <tr>
+                  <th>پلاک ثبتی</th>
+                  <th>خریدار / متقاضی</th>
+                  <th>موقعیت و شرح ملک</th>
+                  <th>ارزش مبادله</th>
+                  <th>وضعیت سند</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="ink-code">#۹۰۴۲-الهیه</span></td>
+                  <td><strong>دکتر آرشام فرهمند</strong></td>
+                  <td>پنت‌هاوس دوبلکس، خیابان فرشته (کد ۱۰۴۹)</td>
+                  <td>۱۵۵,۰۰۰,۰۰۰,۰۰۰ تومان</td>
+                  <td><span class="stamp-chip green">امضای نهایی شد</span></td>
+                </tr>
+                <tr>
+                  <td><span class="ink-code">#۹۰۴۳-شهرک</span></td>
+                  <td><strong>مهندس سهراب پناهی</strong></td>
+                  <td>ویلای مدرن، ایران‌زمین (کد ۱۰۵۰)</td>
+                  <td>۱۸,۰۰۰,۰۰۰,۰۰۰ تومان رهن</td>
+                  <td><span class="stamp-chip blue">تحویل کلید</span></td>
+                </tr>
+                <tr>
+                  <td><span class="ink-code">#۹۰۴۴-اندرزگو</span></td>
+                  <td><strong>هلدینگ آرمان سازه</strong></td>
+                  <td>عرصه اداری، تقاطع اندرزگو</td>
+                  <td>۲۸۰,۰۰۰,۰۰۰,۰۰۰ تومان</td>
+                  <td><span class="stamp-chip orange">استعلام شهرداری</span></td>
+                </tr>
+                <tr>
+                  <td><span class="ink-code">#۹۰۴۵-نیاوران</span></td>
+                  <td><strong>خانم مهندس تهرانی</strong></td>
+                  <td>آپارتمان ۳۲۰ متری نوساز، خیابان مژده</td>
+                  <td>۶۸,۰۰۰,۰۰۰,۰۰۰ تومان</td>
+                  <td><span class="stamp-chip green">بیعانه ثبت شد</span></td>
+                </tr>
+                <tr>
+                  <td><span class="ink-code">#۹۰۴۶-فرمانیه</span></td>
+                  <td><strong>دکتر کیوان صادقی</strong></td>
+                  <td>برج باغ مسکونی، طبقه ۱۸</td>
+                  <td>۱۱۰,۰۰۰,۰۰۰,۰۰۰ تومان</td>
+                  <td><span class="stamp-chip blue">آماده مبایعه‌نامه</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- پنل ۲: بخش اختصاصی تایمر حرفه‌ای -->
+      <div class="view-panel" data-view="timer-section" hidden>
+        
+        <div class="timer-suite-layout">
+          
+          <div class="timer-dial-card">
+            <div class="tdc-top-bar">
+              <button class="tdc-btn-circle" id="btnResetTimerDial" title="صفر کردن تایمر">✕</button>
+              <span class="tdc-title">تایمر زمان‌بندی جلسات و نشست‌ها</span>
+              <button class="tdc-btn-circle active" id="btnPlayTimerDial" title="شروع تایمر">▶</button>
+            </div>
+
+            <div class="dial-center-display">
+              <div class="circular-dial-gauge">
+                <div class="gauge-ticks"></div>
+                <div class="gauge-value-wrap">
+                  <span class="gv-number" id="dialDisplayNum">20</span>
+                  <span class="gv-unit" id="dialDisplayUnit">دقیقه</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dial-stepper-row">
+              <button class="dial-step-btn" id="btnStepMinus">-5</button>
+              <button class="dial-step-btn" id="btnStepPlus">+5</button>
+            </div>
+          </div>
+
+          <div class="timer-controls-card">
+            
+            <div class="hourglass-banner">
+              <div class="hourglass-art-frame">
+                <div class="hourglass-glass">
+                  <div class="sand-top" id="sandTop"></div>
+                  <div class="sand-stream"></div>
+                  <div class="sand-bottom" id="sandBottom"></div>
+                </div>
+              </div>
+              <div class="hgb-text">
+                <h4>شمارش معکوس از ۱ ثانیه تا ۱ سال</h4>
+                <p>تایمر در داینامیک آیلند با ساعت شنی فعال و نوار نئونی دور کپسول پر می‌شود و در پایان با صدای دینگ اعلان می‌دهد.</p>
+              </div>
+            </div>
+
+            <div class="timer-time-inputs-grid">
+              <div class="t-input-unit">
+                <label>سال (Year)</label>
+                <input type="number" id="inputYears" min="0" max="1" value="0">
+              </div>
+              <div class="t-input-unit">
+                <label>ماه (Month)</label>
+                <input type="number" id="inputMonths" min="0" max="12" value="0">
+              </div>
+              <div class="t-input-unit">
+                <label>روز (Day)</label>
+                <input type="number" id="inputDays" min="0" max="31" value="0">
+              </div>
+              <div class="t-input-unit">
+                <label>ساعت (Hour)</label>
+                <input type="number" id="inputHours" min="0" max="23" value="0">
+              </div>
+              <div class="t-input-unit">
+                <label>دقیقه (Min)</label>
+                <input type="number" id="inputMins" min="0" max="59" value="20">
+              </div>
+              <div class="t-input-unit">
+                <label>ثانیه (Sec)</label>
+                <input type="number" id="inputSecs" min="0" max="59" value="0">
+              </div>
+            </div>
+
+            <div class="timer-action-dock">
+              <button class="btn-start-master-timer" id="btnLaunchCustomTimer">کوک کردن و ارسال به داینامیک آیلند 🚀</button>
+              <button class="btn-test-sound" id="btnTestDing">تست صدای زنگ دینگگگگ 🔔</button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- پنل تنظیمات و تغییر تم رنگی سامانه -->
+      <div class="view-panel" data-view="settings" hidden>
+        <div class="settings-suite-card">
+          <h3>تنظیمات ظاهر و تم رنگی سامانه</h3>
+          <p>با انتخاب هر پالت رنگی یا حالت روز/شب، فضای گرافیکی سامانه فوری تغییر می‌کند.</p>
+          
+          <div class="theme-picker-grid">
+            <button class="theme-card-option" data-theme-set="morning">
+              <span class="tc-badge" style="background: #f97316;"></span>
+              <strong>صبح روشن (Morning)</strong>
+              <small>پالت گرم و کلاسیک</small>
+            </button>
+            <button class="theme-card-option" data-theme-set="noon">
+              <span class="tc-badge" style="background: #0284c7;"></span>
+              <strong>ظهر آسمانی (Noon)</strong>
+              <small>آبی مدرن شرکتی</small>
+            </button>
+            <button class="theme-card-option" data-theme-set="sunset">
+              <span class="tc-badge" style="background: #e11d48;"></span>
+              <strong>غروب سرخ (Sunset)</strong>
+              <small>ترکیب تیره و جذاب</small>
+            </button>
+            <button class="theme-card-option" data-theme-set="night">
+              <span class="tc-badge" style="background: #00f0ff;"></span>
+              <strong>شب سایبرپانک (Night)</strong>
+              <small>تم نئونی تیره</small>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⚓ داک ناوبری قبلی شما (کپسول شیشه‌ای کلاسیک) -->
+      <div class="dock-centering-wrapper">
+        <nav class="apple-floating-dock" id="floatingDock">
+          <a href="#dashboard" class="dock-tile active" data-view="dashboard" title="داشبورد">
+            <span class="tile-icon">📊</span>
+            <span class="tile-label">داشبورد</span>
+          </a>
+          <a href="#timer-section" class="dock-tile" data-view="timer-section" title="تایمر">
+            <span class="tile-icon">⏳</span>
+            <span class="tile-label">تایمر</span>
+          </a>
+          <a href="#properties" class="dock-tile" data-view="properties" title="املاک">
+            <span class="tile-icon">🏘️</span>
+            <span class="tile-label">املاک</span>
+          </a>
+          <a href="#campaigns" class="dock-tile" data-view="campaigns" title="کمپین‌ها">
+            <span class="tile-icon">📢</span>
+            <span class="tile-label">کمپین</span>
+          </a>
+          <a href="#contracts" class="dock-tile" data-view="contracts" title="اسناد">
+            <span class="tile-icon">✒️</span>
+            <span class="tile-label">اسناد</span>
+          </a>
+          <a href="#settings" class="dock-tile" data-view="settings" title="تنظیمات تم">
+            <span class="tile-icon">🎨</span>
+            <span class="tile-label">تم رنگی</span>
+          </a>
+          <button class="dock-dots-menu" id="dockOptionsBtn">•••</button>
+        </nav>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- گوی هوش مصنوعی کوروش -->
+  <div class="floating-ai-orb-button" id="btnOpenAiOrb" title="گفتگو با هوش مصنوعی کوروش">
+    <span class="orb-pulse-wave"></span>
+    <div class="orb-core">
+      <span>✨</span>
+    </div>
+    <span class="orb-title-tooltip">هوش مصنوعی کوروش</span>
+  </div>
+
+  <!-- پنجره چت هوش مصنوعی -->
+  <div class="ai-orb-drawer" id="aiDrawer">
+    <div class="ai-drawer-header">
+      <div class="aid-title">
+        <span class="aid-icon">✨</span>
+        <div>
+          <strong>هوش مصنوعی کوروش</strong>
+          <small>پاسخگوی امور فایلینگ، نرخ‌ها و قراردادها</small>
+        </div>
+      </div>
+      <button class="btn-close-drawer" id="btnCloseAiDrawer">✕</button>
+    </div>
+    <div class="ai-drawer-chat" id="aiChatArea">
+      <div class="ai-speech-bubble bot">
+        سلام جناب کوروش بزرگ، در خدمت شما هستم. می‌تونید درباره وضعیت استعلام ثبتی، کارمزدها یا زمان نشست بعدی سوال کنید.
+      </div>
+    </div>
+    <div class="ai-drawer-input">
+      <input type="text" id="aiUserInput" placeholder="پیام یا دستور خود را بنویسید...">
+      <button class="btn-ai-submit" id="btnSendAiMessage">ارسال</button>
+    </div>
+  </div>
+
+  <!-- پاپ‌آپ تماس -->
+  <div class="call-dialog-overlay" id="callModal">
+    <div class="call-dialog-box">
+      <div class="dialog-roof">
+        <span class="pulse-call"></span>
+        <span>تماس ورودی خط سانترال</span>
+      </div>
+
+      <div class="caller-profile">
+        <div class="caller-wood-avatar">👤</div>
+        <div class="caller-data">
+          <h3>خانم کریمی</h3>
+          <p>بودجه: ۱۵ تا ۲۰ میلیارد تومان • متقاضی خرید ویلا</p>
+          <span class="memo-tag">سلیقه: ویلای نوساز با حیاط مشجر</span>
+        </div>
+      </div>
+
+      <div class="call-dialog-actions" id="callOngoingCtrl">
+        <button class="btn-wood-green" id="btnAnswerCall">پاسخگویی به تماس</button>
+        <button class="btn-wood-red" id="btnRejectCall">پایان مکالمه</button>
+      </div>
+
+      <div class="call-dialog-post" id="callPostWrap" hidden>
+        <label>موضوع مکالمه:</label>
+        <select class="vintage-select" id="selectCallTopic">
+          <option>هماهنگی بازدید ویلای شهرک غرب ساعت ۱۹</option>
+          <option>ارسال لوکیشن و مشخصات تکمیلی</option>
+          <option>مذاکره تخفیف با فروشنده</option>
+        </select>
+
+        <label>اقدام بعدی سیستم:</label>
+        <select class="vintage-select" id="selectCallAction">
+          <option>ثبت جلسه در تقویم کاری امشب</option>
+          <option>ارسال پیامک تاییدیه به متقاضی</option>
+          <option>تماس پیگیری فردا ساعت ۱۱</option>
+        </select>
+
+        <button class="btn-ink-submit" id="btnSaveCallReport">ثبت گزارش در پرونده مشتری</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

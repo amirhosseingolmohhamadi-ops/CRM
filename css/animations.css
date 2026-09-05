@@ -1,0 +1,755 @@
+/* =====================================================
+   KOROSH CRM — Premium Motion & Spatial 3D Engine
+   KOROSH BOZORG IRAN HAST
+   ===================================================== */
+
+/* --- 1. Physics Easings & Motion Variables --- */
+:root {
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --duration-instant: 120ms;
+  --duration-fast: 220ms;
+  --duration-normal: 360ms;
+  --duration-gentle: 540ms;
+  --duration-slow: 800ms;
+  --perspective-dock: 1000px;
+  --perspective-card: 1200px;
+}
+
+/* --- 2. Page Entrance & View Switching --- */
+@keyframes spatialFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes viewPanelSwitch {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes topbarSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sidebarSlideInRTL {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.topbar {
+  animation: topbarSlideDown var(--duration-gentle) var(--ease-apple) backwards;
+}
+
+.sidebar {
+  animation: sidebarSlideInRTL var(--duration-gentle) var(--ease-apple) 60ms backwards;
+}
+
+.view-panel.active-panel {
+  animation: viewPanelSwitch var(--duration-normal) var(--ease-apple) forwards;
+}
+
+.welcome-header {
+  animation: spatialFadeUp var(--duration-gentle) var(--ease-apple) 120ms backwards;
+}
+
+.kpi-card:nth-child(1) { animation: spatialFadeUp var(--duration-gentle) var(--ease-apple) 160ms backwards; }
+.kpi-card:nth-child(2) { animation: spatialFadeUp var(--duration-gentle) var(--ease-apple) 220ms backwards; }
+.kpi-card:nth-child(3) { animation: spatialFadeUp var(--duration-gentle) var(--ease-apple) 280ms backwards; }
+.kpi-card:nth-child(4) { animation: spatialFadeUp var(--duration-gentle) var(--ease-apple) 340ms backwards; }
+
+.analytics-showcase-grid {
+  animation: spatialFadeUp var(--duration-gentle) var(--ease-apple) 400ms backwards;
+}
+
+.properties-grid {
+  animation: spatialFadeUp var(--duration-gentle) var(--ease-apple) 460ms backwards;
+}
+
+.table-responsive-container {
+  animation: spatialFadeUp var(--duration-gentle) var(--ease-apple) 520ms backwards;
+}
+
+/* --- 3. 3D Tilt System & Spatial Cards --- */
+.kpi-card,
+.property-card,
+.analytics-card,
+.ai-recommendations-card,
+.empty-state-card {
+  perspective: var(--perspective-card);
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow, border-color;
+  transition:
+    transform var(--duration-normal) var(--ease-apple),
+    box-shadow var(--duration-normal) var(--ease-apple),
+    border-color var(--duration-normal) var(--ease-apple),
+    background var(--duration-normal) var(--ease-apple);
+}
+
+.kpi-card:hover,
+.analytics-card:hover,
+.ai-recommendations-card:hover {
+  transform: translateY(-5px) scale(1.01) translateZ(14px);
+  border-color: var(--surface-border-hover);
+  box-shadow:
+    0 20px 40px -12px rgba(0, 0, 0, 0.5),
+    0 0 28px -6px rgba(var(--accent-rgb), 0.2);
+}
+
+/* --- 4. Property Cards Micro-Interactions --- */
+.property-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.property-card .property-media {
+  overflow: hidden;
+}
+
+.property-card .property-img {
+  will-change: transform;
+  transition: transform var(--duration-slow) var(--ease-apple);
+}
+
+.property-card:hover .property-img {
+  transform: scale(1.06) translateY(-3px);
+}
+
+.property-card:hover {
+  transform: translateY(-7px) translateZ(20px);
+  border-color: rgba(var(--accent-rgb), 0.4);
+  box-shadow:
+    0 26px 48px -12px rgba(0, 0, 0, 0.6),
+    0 0 36px -8px rgba(var(--accent-rgb), 0.25);
+}
+
+.property-tag-badge,
+.property-id-badge {
+  transition: transform var(--duration-fast) var(--ease-apple), opacity var(--duration-fast);
+}
+
+.property-card:hover .property-tag-badge {
+  transform: translateY(-2px) scale(1.05);
+}
+
+.property-card:hover .property-id-badge {
+  transform: translateY(-2px);
+}
+
+.property-favorite-btn {
+  will-change: transform;
+  transition:
+    transform var(--duration-fast) var(--ease-spring),
+    background var(--duration-fast),
+    color var(--duration-fast);
+}
+
+.property-favorite-btn:hover {
+  transform: scale(1.2);
+}
+
+.property-favorite-btn:active {
+  transform: scale(0.9);
+}
+
+.property-favorite-btn.active .fav-icon {
+  animation: heartPop var(--duration-fast) var(--ease-spring);
+}
+
+@keyframes heartPop {
+  0% { transform: scale(0.6); }
+  60% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* --- 5. KPI Cards Kinetic Dynamics --- */
+.kpi-card .kpi-icon-box {
+  will-change: transform;
+  transition:
+    transform var(--duration-normal) var(--ease-spring),
+    border-color var(--duration-fast),
+    background var(--duration-fast);
+}
+
+.kpi-card:hover .kpi-icon-box {
+  transform: translateY(-4px) scale(1.1) rotate(4deg);
+  border-color: rgba(var(--accent-rgb), 0.45);
+  background: var(--surface-elevated);
+}
+
+.kpi-card .kpi-value {
+  transition: color var(--duration-fast) var(--ease-apple);
+}
+
+.kpi-card:hover .kpi-value {
+  color: var(--text);
+}
+
+.kpi-trend {
+  transition: transform var(--duration-fast) var(--ease-apple);
+}
+
+.kpi-card:hover .kpi-trend {
+  transform: scale(1.08);
+}
+
+/* --- 6. Desktop Sidebar Navigation Transitions --- */
+.sidebar-nav .nav-link {
+  position: relative;
+  overflow: hidden;
+  will-change: transform, background;
+  transition:
+    transform var(--duration-fast) var(--ease-apple),
+    background var(--duration-fast) var(--ease-apple),
+    border-color var(--duration-fast) var(--ease-apple),
+    color var(--duration-fast);
+}
+
+.sidebar-nav .nav-link::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 3.5px;
+  height: 65%;
+  border-radius: 4px 0 0 4px;
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.7);
+  transition: transform var(--duration-fast) var(--ease-apple);
+}
+
+.sidebar-nav .nav-link.active::before {
+  transform: translateY(-50%) scaleY(1);
+}
+
+.sidebar-nav .nav-link:hover:not(.active) {
+  transform: translateX(-4px);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.sidebar-nav .nav-link:active {
+  transform: translateX(-2px) scale(0.985);
+}
+
+.sidebar-nav .nav-link .nav-icon {
+  transition: transform var(--duration-fast) var(--ease-apple);
+}
+
+.sidebar-nav .nav-link:hover .nav-icon {
+  transform: scale(1.15);
+}
+
+/* --- 7. Button Mechanics & Radial Ripple --- */
+.btn,
+.quick-action-btn {
+  position: relative;
+  overflow: hidden;
+  will-change: transform, box-shadow;
+  transition:
+    transform var(--duration-fast) var(--ease-apple),
+    box-shadow var(--duration-fast) var(--ease-apple),
+    background var(--duration-fast),
+    border-color var(--duration-fast);
+}
+
+/* Tactile Ripple Wave */
+.btn::before,
+.quick-action-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 10%, transparent 70%);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.45s ease-out, opacity 0.45s ease-out;
+}
+
+.btn:active::before,
+.quick-action-btn:active::before {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  transition: 0s;
+}
+
+.btn:hover,
+.quick-action-btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active,
+.quick-action-btn:active {
+  transform: translateY(1px) scale(0.975);
+}
+
+.btn-primary {
+  box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.32);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.48);
+}
+
+/* --- 8. Search Expansion & Focus Glow --- */
+.global-search-container {
+  will-change: transform, box-shadow, border-color, width;
+  transition:
+    transform var(--duration-fast) var(--ease-apple),
+    box-shadow var(--duration-fast) var(--ease-apple),
+    border-color var(--duration-fast) var(--ease-apple),
+    background var(--duration-fast) var(--ease-apple);
+}
+
+.global-search-container:focus-within {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+  box-shadow:
+    0 8px 22px -4px rgba(0, 0, 0, 0.4),
+    0 0 0 3.5px var(--accent-glow);
+}
+
+.global-search-container .search-icon {
+  transition: transform var(--duration-fast) var(--ease-apple), color var(--duration-fast);
+}
+
+.global-search-container:focus-within .search-icon {
+  transform: scale(1.15);
+  color: var(--accent);
+}
+
+/* --- 9. Spatial Glass 3D Bottom Floating Dock --- */
+@media screen and (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: block;
+    position: fixed;
+    bottom: 18px;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    height: 68px;
+    margin: 0 auto;
+    max-width: 480px;
+    background: var(--surface-glass);
+    backdrop-filter: var(--blur-strong);
+    -webkit-backdrop-filter: var(--blur-strong);
+    border: 1px solid var(--surface-border-hover);
+    border-radius: var(--radius-xl);
+    padding: 0 8px;
+    z-index: 1000;
+    transform: translateZ(0);
+    perspective: var(--perspective-dock);
+    box-shadow:
+      0 20px 42px -10px rgba(0, 0, 0, 0.65),
+      0 0 28px -4px rgba(var(--accent-rgb), 0.15),
+      inset 0 1px 1.5px rgba(255, 255, 255, 0.18);
+    transition:
+      transform var(--duration-normal) var(--ease-apple),
+      box-shadow var(--duration-normal) var(--ease-apple),
+      border-color var(--duration-normal);
+  }
+
+  .mobile-nav-list {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobile-nav-item {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-nav-link {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    width: 100%;
+    height: 52px;
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    transform-style: preserve-3d;
+    will-change: transform, color;
+    transition:
+      transform var(--duration-fast) var(--ease-spring),
+      color var(--duration-fast) var(--ease-apple),
+      background var(--duration-fast);
+  }
+
+  .mobile-nav-link .m-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+    transform-origin: center bottom;
+    transition: transform var(--duration-fast) var(--ease-spring);
+  }
+
+  .mobile-nav-link .m-label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    transition: transform var(--duration-fast) var(--ease-apple), font-weight var(--duration-fast);
+  }
+
+  /* Optical Underglow Aura */
+  .mobile-nav-link.active::before {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    width: 28px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: var(--radius-full);
+    filter: blur(5px);
+    opacity: 0.85;
+    pointer-events: none;
+    animation: dockGlowPulse 2.4s infinite alternate ease-in-out;
+  }
+
+  @keyframes dockGlowPulse {
+    0% { transform: scaleX(0.8); opacity: 0.6; }
+    100% { transform: scaleX(1.3); opacity: 1; }
+  }
+
+  /* 3D Physical Elevation */
+  .mobile-nav-link.active {
+    color: var(--text);
+    background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.22) 0%, rgba(var(--accent-rgb), 0.05) 100%);
+    border: 1px solid rgba(var(--accent-rgb), 0.45);
+    transform: translateY(-9px) scale(1.08) translateZ(22px);
+    box-shadow:
+      0 14px 26px -6px rgba(0, 0, 0, 0.5),
+      0 0 20px -2px rgba(var(--accent-rgb), 0.35);
+  }
+
+  .mobile-nav-link.active .m-icon {
+    transform: translateY(-2.5px) scale(1.18);
+    filter: drop-shadow(0 4px 8px rgba(var(--accent-rgb), 0.45));
+  }
+
+  .mobile-nav-link.active .m-label {
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .mobile-nav-link:active:not(.active) {
+    transform: scale(0.92);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .mobile-bottom-nav {
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    height: 62px;
+    border-radius: var(--radius-lg);
+  }
+
+  .mobile-nav-link.active {
+    transform: translateY(-7px) scale(1.05) translateZ(14px);
+  }
+}
+
+/* --- 10. Modal Spring Physics & Blur Expansion --- */
+.modal-backdrop {
+  opacity: 0;
+  visibility: hidden;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition:
+    opacity var(--duration-normal) var(--ease-apple),
+    backdrop-filter var(--duration-normal) var(--ease-apple),
+    visibility var(--duration-normal);
+}
+
+.modal-backdrop:not([hidden]) {
+  opacity: 1;
+  visibility: visible;
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
+}
+
+.modal-window {
+  transform: translateY(32px) scale(0.94);
+  opacity: 0;
+  transition:
+    transform var(--duration-normal) var(--ease-spring),
+    opacity var(--duration-fast) var(--ease-apple);
+}
+
+.modal-backdrop:not([hidden]) .modal-window {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* --- 11. Toast Notifications Stack Physics --- */
+.toast-stack {
+  pointer-events: none;
+}
+
+.toast-item {
+  pointer-events: auto;
+  animation: toastSlideRTL var(--duration-normal) var(--ease-spring) forwards;
+}
+
+@keyframes toastSlideRTL {
+  0% {
+    opacity: 0;
+    transform: translateX(-36px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* --- 12. Notification & Popover Mechanics --- */
+.popover-dropdown {
+  transform-origin: top left;
+  animation: popoverScaleIn var(--duration-fast) var(--ease-spring) forwards;
+}
+
+@keyframes popoverScaleIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.badge-dot.unread {
+  animation: pulseGlow 2.2s infinite var(--ease-soft);
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.65);
+  }
+  50% {
+    transform: scale(1.18);
+    box-shadow: 0 0 0 7px rgba(244, 63, 94, 0);
+  }
+}
+
+/* --- 13. KOROSH AI Cosmic Aura --- */
+.badge-ai-pulse {
+  position: relative;
+  overflow: hidden;
+  animation: aiAuraPulse 3s infinite var(--ease-soft);
+}
+
+@keyframes aiAuraPulse {
+  0%, 100% {
+    border-color: rgba(var(--accent-rgb), 0.35);
+    box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.15);
+  }
+  50% {
+    border-color: rgba(var(--accent-rgb), 0.85);
+    box-shadow: 0 0 22px rgba(var(--accent-rgb), 0.42);
+  }
+}
+
+.ai-match-item {
+  will-change: transform;
+  transition:
+    transform var(--duration-fast) var(--ease-apple),
+    border-color var(--duration-fast),
+    background var(--duration-fast);
+}
+
+.ai-match-item:hover {
+  transform: translateX(-5px) translateZ(10px);
+  border-color: rgba(var(--accent-rgb), 0.5);
+  background: var(--surface-elevated);
+}
+
+.ai-bubble {
+  animation: spatialFadeUp var(--duration-fast) var(--ease-apple);
+}
+
+/* --- 14. Analytics SVG Graph Animation --- */
+.chart-area {
+  animation: chartAreaFade 1.2s var(--ease-out-expo) forwards;
+}
+
+.chart-line {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: chartDrawLine 1.6s var(--ease-out-expo) forwards 180ms;
+}
+
+@keyframes chartDrawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes chartAreaFade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.chart-data-node {
+  will-change: transform, r;
+  transition:
+    r var(--duration-fast) var(--ease-spring),
+    fill var(--duration-fast),
+    stroke var(--duration-fast);
+}
+
+/* --- 15. System Loading & Shimmer Skeleton --- */
+.loading-overlay {
+  animation: overlayFadeIn var(--duration-fast) ease forwards;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.premium-spinner {
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.is-loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--surface-sunken) 25%,
+    var(--surface-elevated) 50%,
+    var(--surface-sunken) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s infinite linear;
+}
+
+/* --- 16. Universal Theme Transitions (Light/Dark) --- */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color var(--duration-normal) ease,
+    border-color var(--duration-normal) ease,
+    color var(--duration-normal) ease,
+    box-shadow var(--duration-normal) ease !important;
+  transition-delay: 0s !important;
+}
+
+/* --- 17. Micro Spatial Tactility --- */
+.crm-table tbody tr {
+  transition:
+    background var(--duration-fast) var(--ease-apple),
+    transform var(--duration-fast) var(--ease-apple);
+}
+
+.crm-table tbody tr:hover {
+  transform: scale(1.003);
+}
+
+.icon-btn,
+.icon-btn-subtle {
+  transition:
+    transform var(--duration-fast) var(--ease-spring),
+    color var(--duration-fast),
+    background var(--duration-fast);
+}
+
+.icon-btn:hover,
+.icon-btn-subtle:hover {
+  transform: translateY(-2px) scale(1.06);
+}
+
+.icon-btn:active,
+.icon-btn-subtle:active {
+  transform: translateY(0) scale(0.94);
+}
+
+.status-chip {
+  transition: transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast);
+}
+
+.status-chip:hover {
+  transform: scale(1.06);
+}
+
+/* --- 18. Accessibility & Reduced Motion Protocol --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transform: none !important;
+    perspective: none !important;
+  }
+
+  .chart-line {
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  .badge-dot.unread,
+  .badge-ai-pulse,
+  .premium-spinner,
+  .mobile-nav-link.active::before {
+    animation: none !important;
+  }
+}
