@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>سامانه جامع املاک کوروش | سیستم هوشمند و داینامیک</title>
 
+  <!-- فاوآیکون تب بالای مرورگر (لوگوی اختصاصی کوروش) -->
+  <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+
   <!-- فونت وزیرمتن -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +24,9 @@
     <!-- سایدبار ناوبری و ویجت ماژولار زمان -->
     <aside class="storybook-sidebar" id="mainSidebar">
       <div class="story-brand">
-        <div class="stamp-avatar">🏢</div>
+        <div class="stamp-avatar" style="overflow: hidden; padding: 2px;">
+          <img src="assets/icons/favicon.png" alt="لوگوی کوروش" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.outerHTML='🏢'">
+        </div>
         <div class="brand-text">
           <h2>کوروش</h2>
           <span>عملیات و فروش املاک</span>
@@ -382,7 +387,7 @@
                   <th>وضعیت سند</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="dealsTableBody">
                 <tr>
                   <td><span class="ink-code">#۹۰۴۲-الهیه</span></td>
                   <td><strong>دکتر آرشام فرهمند</strong></td>
@@ -629,7 +634,7 @@
     </div>
   </div>
 
-  <!-- پاپ‌آپ تماس -->
+  <!-- پاپ‌آپ تماس سانترال -->
   <div class="call-dialog-overlay" id="callModal">
     <div class="call-dialog-box">
       <div class="dialog-roof">
@@ -671,7 +676,7 @@
     </div>
   </div>
 
-  <!-- اسکریپت‌ها با ترتیب دقیق -->
+  <!-- اسکریپت‌های پروژه به ترتیب وابستگی -->
   <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
   <script src="js/db.js"></script>
   <script src="js/components.js"></script>
