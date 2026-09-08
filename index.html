@@ -223,7 +223,7 @@
 
       </header>
 
-      <!-- پنل ۱: داشبورد جامع -->
+      <!-- پنل ۱: داشبورد جامع همراه با دیوراما سه‌بعدی متحرک لوپلی -->
       <div class="view-panel active-panel" data-view="dashboard">
         
         <section class="stamped-kpi-row">
@@ -255,72 +255,24 @@
           </div>
         </section>
 
+        <!-- بخش تصویرسازی سه‌بعدی دیوراما (عین ویدیوی ارسالی) -->
         <section class="illustrated-stage-grid">
           
-          <div class="canvas-vintage-panel">
+          <div class="canvas-vintage-panel" style="position: relative; overflow: hidden; display: flex; flex-direction: column;">
             <div class="panel-narrative-bar">
               <div>
-                <h3>روند ماهانه حجم معاملات و جذب نقدینگی</h3>
-                <p>ستون‌ها را لمس کنید تا ریز مبالغ و تعداد قراردادها نمایش داده شود</p>
+                <h3>دیوراما سه‌بعدی منطقه و عمارت کوروش</h3>
+                <p>با ماوس بکشید تا بچرخد؛ اسکرول برای زوم (مدل لوپلی رترو با تردد تاکسی)</p>
               </div>
               <div class="narrative-controls">
-                <button class="story-btn active">ماهانه</button>
-                <button class="story-btn">هفتگی</button>
+                <button class="story-btn active" id="btnSpin">گردش نما</button>
+                <button class="story-btn" id="btnCamReset">بازنشانی زاویه</button>
               </div>
             </div>
 
-            <div class="chart-stage-wrapper">
-              <div class="chart-grid-backdrop">
-                <div class="grid-line" data-val="۴۰۰ م.ت"></div>
-                <div class="grid-line" data-val="۳۰۰ م.ت"></div>
-                <div class="grid-line" data-val="۲۰۰ م.ت"></div>
-                <div class="grid-line" data-val="۱۰۰ م.ت"></div>
-                <div class="grid-line" data-val="۰"></div>
-              </div>
-
-              <div class="dynamic-chart-bars">
-                <div class="d-bar-slot" data-amount="۱۸۰ میلیارد" data-deals="۱۲ قرارداد">
-                  <span class="bar-tooltip">۱۸۰ م.ت</span>
-                  <div class="d-bar-tube"><div class="d-fill" style="height: 45%;"></div></div>
-                  <span class="month-label">فروردین</span>
-                </div>
-
-                <div class="d-bar-slot" data-amount="۲۴۰ میلیارد" data-deals="۱۶ قرارداد">
-                  <span class="bar-tooltip">۲۴۰ م.ت</span>
-                  <div class="d-bar-tube"><div class="d-fill" style="height: 60%;"></div></div>
-                  <span class="month-label">اردیبهشت</span>
-                </div>
-
-                <div class="d-bar-slot" data-amount="۳۱۰ میلیارد" data-deals="۲۱ قرارداد">
-                  <span class="bar-tooltip">۳۱۰ م.ت</span>
-                  <div class="d-bar-tube"><div class="d-fill" style="height: 78%;"></div></div>
-                  <span class="month-label">خرداد</span>
-                </div>
-
-                <div class="d-bar-slot" data-amount="۲۱۵ میلیارد" data-deals="۱۴ قرارداد">
-                  <span class="bar-tooltip">۲۱۵ م.ت</span>
-                  <div class="d-bar-tube"><div class="d-fill" style="height: 54%;"></div></div>
-                  <span class="month-label">تیر</span>
-                </div>
-
-                <div class="d-bar-slot active-high" data-amount="۳۸۴ میلیارد" data-deals="۲۸ قرارداد">
-                  <div class="record-bubble">رکورد سال 🔥 ۳۸۴ م.ت</div>
-                  <div class="d-bar-tube"><div class="d-fill active" style="height: 94%;"></div></div>
-                  <span class="month-label active">مرداد</span>
-                </div>
-
-                <div class="d-bar-slot" data-amount="۲۹۰ میلیارد" data-deals="۱۹ قرارداد">
-                  <span class="bar-tooltip">۲۹۰ م.ت</span>
-                  <div class="d-bar-tube"><div class="d-fill" style="height: 72%;"></div></div>
-                  <span class="month-label">شهریور</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="canvas-bottom-legend">
-              <div class="legend-item"><small>بالاترین نرخ جذب</small><strong>پنت‌هاوس‌های منطقه ۱</strong></div>
-              <div class="legend-item"><small>میانگین دوره معامله</small><strong class="highlight-txt">۱۸ روز کاری</strong></div>
-              <div class="legend-item"><small>ضریب تبدیل کل</small><strong>۴.۲٪ رشد ماهانه</strong></div>
+            <!-- کانتینر وب‌جی‌ال Three.js -->
+            <div id="three-model-container" style="width: 100%; flex: 1; min-height: 290px; border-radius: 12px; overflow: hidden; position: relative; background: #f0e6d2;">
+              <!-- کانواس 3D داخل اینجا رندر می‌شود -->
             </div>
           </div>
 
@@ -389,7 +341,7 @@
                 </tr>
               </thead>
               <tbody id="dealsTableBody">
-                <!-- رندر از دیتابیس Dexie توسط app.js -->
+                <!-- دیتای Dexie در اینجا قرار می‌گیرد -->
               </tbody>
             </table>
           </div>
@@ -443,13 +395,13 @@
 
           <!-- کانتینر شبکه کارت‌ها -->
           <div id="propertiesCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1.5rem;">
-            <!-- کارت‌ها توسط app.js رندر می‌شوند -->
+            <!-- کارت‌ها از طریق app.js چیده می‌شوند -->
           </div>
 
         </div>
       </div>
 
-      <!-- مودال مدرن ثبت ملک جدید -->
+      <!-- مودال ثبت ملک جدید -->
       <div class="call-dialog-overlay" id="addPropertyModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 99999;">
         <div style="background: var(--paper-card); border: 2px solid var(--border-dark); border-radius: var(--radius-md); width: 90%; max-width: 520px; padding: 1.4rem; color: var(--ink-primary); box-shadow: 6px 6px 0px var(--border-dark);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1.5px dashed var(--paper-border); padding-bottom: 0.6rem;">
@@ -721,10 +673,12 @@
     </div>
   </div>
 
-  <!-- اسکریپت‌های پروژه به ترتیب وابستگی -->
+  <!-- اسکریپت‌های پروژه: Three.js برای صحنه سه‌بعدی متحرک + دیتابیس Dexie و منطق‌ها -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
   <script src="js/db.js"></script>
   <script src="js/components.js"></script>
+  <script src="js/three-scene.js"></script>
   <script src="js/dashboard.js"></script>
   <script src="js/app.js"></script>
 </body>
