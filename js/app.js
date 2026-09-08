@@ -89,6 +89,7 @@
     timerSecondsLeft: 0,
     timerTotalSeconds: 0,
     isPrivacyActive: false,
+    currentSelectedProperty: null,
     mockEntities: [
       { id: 'PROP-1049', type: 'ملک', title: 'پنت‌هاوس ۴۵۰ متری الهیه فرشته', targetView: 'properties' },
       { id: 'PROP-1050', type: 'ملک', title: 'ویلای مدرن ۶۵۰ متری شهرک غرب', targetView: 'properties' },
@@ -805,10 +806,11 @@
   };
 
   // =====================================================
-  // 11. Property Cards Deck & Database Renderer
+  // 11. Property Cards Deck & Share Engine
   // =====================================================
   const PropertyCardsEngine = {
     init() {
+      // دکمه تاگل حالت امن پرزنت در صفحه کارت‌ها
       const btnPrivacy = document.getElementById('btnToggleDeckPrivacy');
       const labelPrivacy = document.getElementById('privacyBtnLabel');
 
@@ -836,7 +838,7 @@
         });
       }
 
-      // Modal Property Intake
+      // مودال ثبت ملک
       const addModal = document.getElementById('addPropertyModal');
       const btnOpenAdd = document.getElementById('btnOpenAddPropertyModal');
       const btnCloseAdd = document.getElementById('btnCloseAddPropertyModal');
@@ -894,6 +896,92 @@
           loadPropertiesData();
         });
       }
+
+      // راه‌اندازی مودال اشتراک‌گذاری (Share Modal)
+      this.initShareModal();
+    },
+
+    initShareModal() {
+      const shareModal = document.getElementById('sharePropertyModal');
+      const btnCloseShare = document.getElementById('btnCloseShareModal');
+      const checkConfidential = document.getElementById('shareIncludeConfidential');
+      const btnCopy = document.getElementById('btnCopyShareText');
+      const btnTelegram = document.getElementById('btnShareTelegram');
+      const btnWhatsapp = document.getElementById('btnShareWhatsapp');
+
+      if (!shareModal) return;
+
+      btnCloseShare?.addEventListener('click', () => {
+        shareModal.style.display = 'none';
+      });
+
+      shareModal.addEventListener('click', (e) => {
+        if (e.target === shareModal) shareModal.style.display = 'none';
+      });
+
+      checkConfidential?.addEventListener('change', () => {
+        this.updateShareTextOutput();
+      });
+
+      btnCopy?.addEventListener('click', () => {
+        const text = document.getElementById('shareGeneratedText')?.value;
+        if (text) {
+          navigator.clipboard.writeText(text);
+          ToastManager.show('متن پرزنت کپی شد 📋 آماده ارسال به مشتری', 'success');
+        }
+      });
+
+      btnTelegram?.addEventListener('click', () => {
+        const text = encodeURIComponent(document.getElementById('shareGeneratedText')?.value || '');
+        window.open(`https://t.me/share/url?url=&text=${text}`, '_blank');
+      });
+
+      btnWhatsapp?.addEventListener('click', () => {
+        const text = encodeURIComponent(document.getElementById('shareGeneratedText')?.value || '');
+        window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+      });
+    },
+
+    openShareModal(property) {
+      AppState.currentSelectedProperty = property;
+      const shareModal = document.getElementById('sharePropertyModal');
+      if (!shareModal) return;
+
+      document.getElementById('sharePreviewImg').src = property.image || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80';
+      document.getElementById('sharePreviewTitle').textContent = property.title || 'ملک لوکس';
+      document.getElementById('sharePreviewSpecs').textContent = `📐 ${property.area || '۳۲۰'} متر • 🛏 ${property.rooms || '۳'} خواب`;
+      document.getElementById('sharePreviewPrice').textContent = property.price || 'توافقی';
+
+      const checkConfidential = document.getElementById('shareIncludeConfidential');
+      if (checkConfidential) checkConfidential.checked = false;
+
+      this.updateShareTextOutput();
+      shareModal.style.display = 'flex';
+    },
+
+    updateShareTextOutput() {
+      const p = AppState.currentSelectedProperty;
+      if (!p) return;
+
+      const isConfidential = document.getElementById('shareIncludeConfidential')?.checked;
+      const textarea = document.getElementById('shareGeneratedText');
+
+      let output = `🏢 فایل اختصاصی املاک کوروش\n`;
+      output += `📍 عنوان: ${p.title || 'آپارتمان لوکس'}\n`;
+      output += `📐 متراژ: ${p.area || '۳۲۰'} متر | 🛏 تعداد خواب: ${p.rooms || '۳'}\n`;
+      output += `💎 ارزش اعلامی: ${p.price || 'توافقی'}\n`;
+      output += `🏷 شناسه رهگیری: ${p.code || 'KR-00'}\n`;
+
+      if (isConfidential) {
+        output += `\n🔒 [اطلاعات محرمانه جهت پیگیری]:\n`;
+        output += `👤 مالک: ${p.ownerName || 'ثبت در سامانه'}\n`;
+        output += `📞 تماس مالک: ${p.ownerPhone || '---'}\n`;
+        output += `📌 آدرس دقیق: ${p.address || p.location || 'تهران'}\n`;
+      } else {
+        output += `\n✨ دارای سند رسمی تک‌برگ و بدون معارض.\nجهت هماهنگی بازدید و دریافت فیلم واحد با دفتر املاک تماس حاصل فرمایید.`;
+      }
+
+      if (textarea) textarea.value = output;
     },
 
     renderCards(properties) {
@@ -910,7 +998,7 @@
         return;
       }
 
-      container.innerHTML = properties.map(item => {
+      container.innerHTML = properties.map((item, idx) => {
         const isUrgent = item.tag === 'urgent' || item.status === 'فوری';
         const badgeText = item.tagText || (isUrgent ? 'فوری 🔥' : 'اکازیون ✨');
         const badgeClass = isUrgent ? 'brick' : 'olive';
@@ -935,7 +1023,7 @@
               </span>
             </div>
 
-            <!-- مشخصات و محتوا با وضوح و کنتراست کامل -->
+            <!-- مشخصات و محتوا -->
             <div style="padding: 1.1rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 10px;">
               <div>
                 <h4 style="margin: 0 0 6px 0; font-size: 1.05rem; font-weight: 900; color: var(--ink-primary); line-height: 1.4;">
@@ -956,7 +1044,7 @@
                   </strong>
                 </div>
 
-                <!-- باکس اطلاعات محرمانه (حالت امن) -->
+                <!-- باکس اطلاعات محرمانه -->
                 <div style="background: rgba(0, 0, 0, 0.04); padding: 8px 10px; border-radius: var(--radius-sm); border: 1px dashed var(--paper-border); font-size: 0.74rem;">
                   <div class="card-private-data" style="${blurStyle} transition: filter 0.25s, opacity 0.25s; color: var(--ink-primary);">
                     <strong>مالک:</strong> ${item.ownerName || 'خانم تهرانی'} (${item.ownerPhone || '09124445566'})
@@ -967,15 +1055,15 @@
                 </div>
               </div>
 
-              <!-- اکشن‌های سریع و دکمه‌ها -->
+              <!-- دکمه‌های اکشن: ارسال هوشمند و آگهی هوش مصنوعی -->
               <div style="display: flex; gap: 8px; margin-top: auto; padding-top: 8px;">
-                <button class="story-btn" title="تولید آگهی دیوار با AI" onclick="window.showToast('✨ هوش مصنوعی کوروش متن آگهی دیوار را آماده کرد.', 'info')" style="flex: 1; padding: 7px; font-size: 0.8rem; font-weight: 800; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                <button class="story-btn btn-trigger-share" data-index="${idx}" style="flex: 1.3; padding: 7px; font-size: 0.8rem; font-weight: 800; border-radius: 6px; background: var(--accent-sub); color: #000; border: 1.5px solid var(--border-dark); display: flex; align-items: center; justify-content: center; gap: 4px; cursor: pointer; box-shadow: 2px 2px 0 var(--border-dark);">
+                  <span>📤</span>
+                  <span>ارسال / پرزنت</span>
+                </button>
+                <button class="story-btn" onclick="window.showToast('✨ متن تبلیغاتی هوش مصنوعی تولید شد.', 'info')" style="flex: 1; padding: 7px; font-size: 0.8rem; font-weight: 800; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 4px;">
                   <span>✨</span>
                   <span>متن آگهی</span>
-                </button>
-                <button class="story-btn" title="مشاهده پرونده" onclick="window.showToast('پرونده ملک ${item.code || ''} باز شد.', 'info')" style="flex: 1; padding: 7px; font-size: 0.8rem; font-weight: 800; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 4px;">
-                  <span>👁️</span>
-                  <span>پرونده</span>
                 </button>
               </div>
 
@@ -984,6 +1072,17 @@
           </div>
         `;
       }).join('');
+
+      // اتصال رویداد باز شدن مودال ارسال به دکمه‌های هر کارت
+      container.querySelectorAll('.btn-trigger-share').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const index = parseInt(btn.dataset.index, 10);
+          const property = properties[index];
+          if (property) {
+            PropertyCardsEngine.openShareModal(property);
+          }
+        });
+      });
     }
   };
 
@@ -1043,6 +1142,8 @@
         SearchEngine.closeDropdown();
         document.getElementById('callModal')?.classList.remove('active');
         document.getElementById('aiDrawer')?.classList.remove('active');
+        document.getElementById('sharePropertyModal')?.style.setProperty('display', 'none');
+        document.getElementById('addPropertyModal')?.style.setProperty('display', 'none');
         const island = document.getElementById('smartIsland');
         if (island && island.getAttribute('data-state') === 'news') {
           island.setAttribute('data-state', AppState.timerActive ? 'timer' : 'idle');
