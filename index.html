@@ -223,7 +223,7 @@
 
       </header>
 
-      <!-- پنل ۱: داشبورد جامع همراه با دیوراما سه‌بعدی متحرک لوپلی -->
+      <!-- پنل ۱: داشبورد جامع (بازگشت نمودار ستونی رترو) -->
       <div class="view-panel active-panel" data-view="dashboard">
         
         <section class="stamped-kpi-row">
@@ -255,24 +255,72 @@
           </div>
         </section>
 
-        <!-- بخش تصویرسازی سه‌بعدی دیوراما -->
         <section class="illustrated-stage-grid">
           
-          <div class="canvas-vintage-panel" style="position: relative; overflow: hidden; display: flex; flex-direction: column;">
+          <div class="canvas-vintage-panel">
             <div class="panel-narrative-bar">
               <div>
-                <h3>دیوراما سه‌بعدی منطقه و عمارت کوروش</h3>
-                <p>با ماوس بکشید تا بچرخد؛ اسکرول برای زوم (مدل لوپلی رترو با تردد تاکسی)</p>
+                <h3>روند ماهانه حجم معاملات و جذب نقدینگی</h3>
+                <p>ستون‌ها را لمس کنید تا ریز مبالغ و تعداد قراردادها نمایش داده شود</p>
               </div>
               <div class="narrative-controls">
-                <button class="story-btn active" id="btnSpin">گردش نما</button>
-                <button class="story-btn" id="btnCamReset">بازنشانی زاویه</button>
+                <button class="story-btn active">ماهانه</button>
+                <button class="story-btn">هفتگی</button>
               </div>
             </div>
 
-            <!-- کانتینر وب‌جی‌ال Three.js -->
-            <div id="three-model-container" style="width: 100%; flex: 1; min-height: 290px; border-radius: 12px; overflow: hidden; position: relative; background: #f0e6d2;">
-              <!-- کانواس 3D داخل اینجا رندر می‌شود -->
+            <div class="chart-stage-wrapper">
+              <div class="chart-grid-backdrop">
+                <div class="grid-line" data-val="۴۰۰ م.ت"></div>
+                <div class="grid-line" data-val="۳۰۰ م.ت"></div>
+                <div class="grid-line" data-val="۲۰۰ م.ت"></div>
+                <div class="grid-line" data-val="۱۰۰ م.ت"></div>
+                <div class="grid-line" data-val="۰"></div>
+              </div>
+
+              <div class="dynamic-chart-bars">
+                <div class="d-bar-slot" data-amount="۱۸۰ میلیارد" data-deals="۱۲ قرارداد">
+                  <span class="bar-tooltip">۱۸۰ م.ت</span>
+                  <div class="d-bar-tube"><div class="d-fill" style="height: 45%;"></div></div>
+                  <span class="month-label">فروردین</span>
+                </div>
+
+                <div class="d-bar-slot" data-amount="۲۴۰ میلیارد" data-deals="۱۶ قرارداد">
+                  <span class="bar-tooltip">۲۴۰ م.ت</span>
+                  <div class="d-bar-tube"><div class="d-fill" style="height: 60%;"></div></div>
+                  <span class="month-label">اردیبهشت</span>
+                </div>
+
+                <div class="d-bar-slot" data-amount="۳۱۰ میلیارد" data-deals="۲۱ قرارداد">
+                  <span class="bar-tooltip">۳۱۰ م.ت</span>
+                  <div class="d-bar-tube"><div class="d-fill" style="height: 78%;"></div></div>
+                  <span class="month-label">خرداد</span>
+                </div>
+
+                <div class="d-bar-slot" data-amount="۲۱۵ میلیارد" data-deals="۱۴ قرارداد">
+                  <span class="bar-tooltip">۲۱۵ م.ت</span>
+                  <div class="d-bar-tube"><div class="d-fill" style="height: 54%;"></div></div>
+                  <span class="month-label">تیر</span>
+                </div>
+
+                <div class="d-bar-slot active-high" data-amount="۳۸۴ میلیارد" data-deals="۲۸ قرارداد">
+                  <div class="record-bubble">رکورد سال 🔥 ۳۸۴ م.ت</div>
+                  <div class="d-bar-tube"><div class="d-fill active" style="height: 94%;"></div></div>
+                  <span class="month-label active">مرداد</span>
+                </div>
+
+                <div class="d-bar-slot" data-amount="۲۹۰ میلیارد" data-deals="۱۹ قرارداد">
+                  <span class="bar-tooltip">۲۹۰ م.ت</span>
+                  <div class="d-bar-tube"><div class="d-fill" style="height: 72%;"></div></div>
+                  <span class="month-label">شهریور</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="canvas-bottom-legend">
+              <div class="legend-item"><small>بالاترین نرخ جذب</small><strong>پنت‌هاوس‌های منطقه ۱</strong></div>
+              <div class="legend-item"><small>میانگین دوره معامله</small><strong class="highlight-txt">۱۸ روز کاری</strong></div>
+              <div class="legend-item"><small>ضریب تبدیل کل</small><strong>۴.۲٪ رشد ماهانه</strong></div>
             </div>
           </div>
 
@@ -341,7 +389,7 @@
                 </tr>
               </thead>
               <tbody id="dealsTableBody">
-                <!-- دیتای Dexie در اینجا قرار می‌گیرد -->
+                <!-- دیتای Dexie توسط app.js چیده می‌شود -->
               </tbody>
             </table>
           </div>
@@ -368,7 +416,7 @@
                 آرشیو لوکس و فایل‌های فعال منطقه
               </h2>
               <p style="color: rgba(255,255,255,0.85); font-size: 0.78rem; margin: 3px 0 0 0;">
-                مدیریت ارزش‌گذاری، اسناد رسمی تک‌برگ و تولید آنی آگهی دیوار
+                مدیریت ارزش‌گذاری، اسناد رسمی تک‌برگ و صدور فوری آگهی
               </p>
             </div>
           </div>
@@ -453,14 +501,14 @@
         </div>
       </div>
 
-      <!-- 📤 مودال پیشرفته اشتراک‌گذاری و پرزنت هوشمند ملک -->
+      <!-- 📤 مودال پیشرفته اشتراک‌گذاری و ارسال مشخصات ملک -->
       <div class="call-dialog-overlay" id="sharePropertyModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 99999;">
         <div style="background: var(--paper-card); border: 2px solid var(--border-dark); border-radius: var(--radius-md); width: 90%; max-width: 480px; padding: 1.4rem; color: var(--ink-primary); box-shadow: 6px 6px 0px var(--border-dark); display: flex; flex-direction: column; gap: 12px;">
           
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px dashed var(--paper-border); padding-bottom: 0.6rem;">
             <div style="display: flex; align-items: center; gap: 6px;">
-              <span style="font-size: 1.1rem;">📤</span>
-              <h3 style="margin: 0; font-size: 1.05rem; font-weight: 900; color: var(--accent-main);">ارسال و اشتراک‌گذاری فایل ملک</h3>
+              <span style="font-size: 1.2rem;">📤</span>
+              <h3 style="margin: 0; font-size: 1.05rem; font-weight: 900; color: var(--accent-main);">ارسال و پرزنت فایل ملک</h3>
             </div>
             <button id="btnCloseShareModal" style="background: none; border: none; font-size: 1.2rem; color: var(--ink-secondary); cursor: pointer;">✕</button>
           </div>
@@ -478,7 +526,7 @@
             </div>
           </div>
 
-          <!-- کلید و سوییچ محرمانگی -->
+          <!-- سوییچ محرمانگی -->
           <div style="background: rgba(201, 138, 44, 0.08); border: 1.5px dashed var(--accent-sub); border-radius: var(--radius-sm); padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
             <div>
               <strong style="font-size: 0.8rem; display: block; color: var(--ink-primary);">ارسال همراه با اطلاعات محرمانه؟</strong>
@@ -492,11 +540,11 @@
 
           <!-- پیش‌نمایش متن خروجی -->
           <div>
-            <label style="font-size: 0.72rem; font-weight: 700; color: var(--ink-secondary); display: block; margin-bottom: 4px;">پیش‌نمایش متن ارسالی برای مشتری:</label>
+            <label style="font-size: 0.72rem; font-weight: 700; color: var(--ink-secondary); display: block; margin-bottom: 4px;">پیش‌نمایش پیام آماده ارسال:</label>
             <textarea id="shareGeneratedText" rows="5" readonly style="width: 100%; border-radius: 8px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); padding: 8px; font-size: 0.76rem; line-height: 1.5; resize: none;"></textarea>
           </div>
 
-          <!-- دکمه‌های ارسال و پیام‌رسان‌ها -->
+          <!-- دکمه‌های پیام‌رسان‌ها -->
           <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 2px;">
             <button id="btnShareTelegram" class="story-btn" style="padding: 8px; font-weight: 800; font-size: 0.78rem; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 4px;">
               <span>✈️</span>
@@ -735,12 +783,10 @@
     </div>
   </div>
 
-  <!-- اسکریپت‌های پروژه: Three.js + Dexie + Components + Dashboard + App -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- اسکریپت‌های پروژه -->
   <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
   <script src="js/db.js"></script>
   <script src="js/components.js"></script>
-  <script src="js/three-scene.js"></script>
   <script src="js/dashboard.js"></script>
   <script src="js/app.js"></script>
 </body>

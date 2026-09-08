@@ -810,7 +810,6 @@
   // =====================================================
   const PropertyCardsEngine = {
     init() {
-      // دکمه تاگل حالت امن پرزنت در صفحه کارت‌ها
       const btnPrivacy = document.getElementById('btnToggleDeckPrivacy');
       const labelPrivacy = document.getElementById('privacyBtnLabel');
 
@@ -897,7 +896,7 @@
         });
       }
 
-      // راه‌اندازی مودال اشتراک‌گذاری (Share Modal)
+      // راه‌اندازی مودال اشتراک‌گذاری
       this.initShareModal();
     },
 
