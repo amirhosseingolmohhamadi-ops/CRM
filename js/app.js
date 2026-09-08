@@ -88,6 +88,7 @@
     timerActive: false,
     timerSecondsLeft: 0,
     timerTotalSeconds: 0,
+    isPrivacyActive: false,
     mockEntities: [
       { id: 'PROP-1049', type: 'ملک', title: 'پنت‌هاوس ۴۵۰ متری الهیه فرشته', targetView: 'properties' },
       { id: 'PROP-1050', type: 'ملک', title: 'ویلای مدرن ۶۵۰ متری شهرک غرب', targetView: 'properties' },
@@ -101,7 +102,7 @@
   };
 
   // =====================================================
-  // 1. Modular Clock & Smart Daytime Phase Engine & Theme Switcher
+  // 1. Modular Clock & Smart Daytime Phase Engine
   // =====================================================
   const ModularTimeEngine = {
     init() {
@@ -118,11 +119,9 @@
       this.flipMinutes = document.getElementById('flipMinutes');
       this.flipAmPm = document.getElementById('flipAmPm');
 
-      // بارگذاری تم ذخیره‌شده کاربر
       const savedTheme = Storage.get('korosh_theme', 'morning');
       this.setTheme(savedTheme, false);
 
-      // رویدادهای تغییر تم از پنل تنظیمات
       document.querySelectorAll('[data-theme-set]').forEach(btn => {
         btn.addEventListener('click', () => {
           const tName = btn.getAttribute('data-theme-set');
@@ -700,7 +699,7 @@
   };
 
   // =====================================================
-  // 9. Telephony Pop-up Simulation (RingoCRM Style)
+  // 9. Telephony Pop-up Simulation
   // =====================================================
   const TelephonyManager = {
     init() {
@@ -804,7 +803,162 @@
   };
 
   // =====================================================
-  // 11. Bootstrap
+  // 11. Property Cards Deck & Database Renderer
+  // =====================================================
+  const PropertyCardsEngine = {
+    init() {
+      const btnPrivacy = document.getElementById('btnToggleDeckPrivacy');
+      const labelPrivacy = document.getElementById('privacyBtnLabel');
+
+      if (btnPrivacy && !btnPrivacy.dataset.bound) {
+        btnPrivacy.dataset.bound = "true";
+        btnPrivacy.addEventListener('click', () => {
+          AppState.isPrivacyActive = !AppState.isPrivacyActive;
+          if (labelPrivacy) {
+            labelPrivacy.textContent = AppState.isPrivacyActive 
+              ? 'حالت امن فعال (اطلاعات محو)' 
+              : 'حالت امن پرزنت (عادی)';
+          }
+          document.querySelectorAll('.card-private-data').forEach(el => {
+            el.style.filter = AppState.isPrivacyActive ? 'blur(5px)' : 'none';
+          });
+          ToastManager.show(
+            AppState.isPrivacyActive ? '🛡️ حالت پرزنت امن فعال شد.' : 'حالت عادی بازگردانی شد.',
+            'info'
+          );
+        });
+      }
+    },
+
+    renderCards(properties) {
+      const container = document.getElementById('propertiesCardsContainer');
+      if (!container) return;
+
+      if (!properties || properties.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: var(--paper-card); border: 1.5px dashed var(--border-dark); border-radius: var(--radius-sm);">
+            <span style="font-size: 2.2rem;">📭</span>
+            <p style="margin-top: 10px; font-weight: 700; color: var(--ink-secondary);">هیچ ملکی در دیتابیس ثبت نشده است.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = properties.map(item => {
+        const isUrgent = item.tag === 'urgent' || item.status === 'فوری';
+        const badgeText = item.tagText || (isUrgent ? 'فوری 🔥' : 'اکازیون ✨');
+        const badgeClass = isUrgent ? 'brick' : 'olive';
+
+        return `
+          <div class="stamp-kpi-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 0; overflow: hidden; background: var(--paper-card); border: 1.5px solid var(--border-dark); border-radius: var(--radius-sm); box-shadow: 3px 3px 0px var(--shadow-color); transition: transform 0.2s ease;">
+            
+            <!-- تصویر و نشان‌ها -->
+            <div style="position: relative; width: 100%; height: 180px; background: #1a1a1a; overflow: hidden;">
+              <img src="${item.image || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'}" 
+                   alt="${item.title || 'ملک'}" 
+                   style="width: 100%; height: 100%; object-fit: cover; opacity: 0.92;">
+              
+              <span class="stamp-chip ${badgeClass}" style="position: absolute; top: 10px; right: 10px; font-size: 0.72rem; font-weight: 800;">
+                ${badgeText}
+              </span>
+
+              <span style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.68rem; font-family: monospace;">
+                ${item.code || item.id || 'PROP-#'}
+              </span>
+
+              ${item.matchedClientsCount ? `
+                <span style="position: absolute; bottom: 10px; left: 10px; background: rgba(30,126,52,0.9); color: #fff; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">
+                  👤 ${item.matchedClientsCount} متقاضی آماده
+                </span>
+              ` : ''}
+            </div>
+
+            <!-- مشخصات و محتوا -->
+            <div style="padding: 1rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h4 style="margin: 0 0 6px 0; font-size: 0.98rem; font-weight: 800; color: var(--ink-primary); line-height: 1.4;">
+                  ${item.title || 'آپارتمان مسکونی'}
+                </h4>
+
+                <p class="card-private-data" style="margin: 0 0 10px 0; font-size: 0.75rem; color: var(--ink-secondary); transition: filter 0.2s;" ${AppState.isPrivacyActive ? 'style="filter: blur(5px);"' : ''}>
+                  📍 ${item.location || item.address || 'تهران'}
+                </p>
+
+                <!-- متراژ، اتاق و طبقه -->
+                <div style="display: flex; gap: 8px; font-size: 0.72rem; color: var(--ink-primary); background: var(--paper-bg); padding: 6px 10px; border-radius: 4px; border: 1px dashed var(--paper-border); margin-bottom: 12px;">
+                  <span>📐 ${item.area || '---'} متر</span>
+                  <span>•</span>
+                  <span>🛏 ${item.rooms || item.beds || '---'} خواب</span>
+                  <span>•</span>
+                  <span>🏢 طبقه ${item.floor || '۱'}</span>
+                </div>
+              </div>
+
+              <!-- قیمت کل و اکشن‌های سریع -->
+              <div style="padding-top: 10px; border-top: 1px dashed var(--paper-border); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <small style="font-size: 0.65rem; color: var(--ink-secondary); display: block;">ارزش اعلامی:</small>
+                  <strong style="font-size: 0.88rem; color: var(--accent-main); font-weight: 900;">
+                    ${item.price || 'توافقی'}
+                  </strong>
+                </div>
+
+                <div style="display: flex; gap: 6px;">
+                  <button class="story-btn" title="تولید آگهی دیوار با AI" onclick="window.showToast('✨ هوش مصنوعی کوروش متن آگهی دیوار را آماده کرد.', 'info')" style="padding: 4px 8px; font-size: 0.85rem;">
+                    ✨
+                  </button>
+                  <button class="story-btn card-private-data" title="اطلاعات محرمانه مالک" onclick="window.showToast('مالک: ${item.ownerName || 'محرمانه'} | تلفن: ${item.ownerPhone || 'ثبت در سامانه'}', 'warning')" style="padding: 4px 8px; font-size: 0.85rem;">
+                    📞
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+  };
+
+  async function loadPropertiesData() {
+    PropertyCardsEngine.init();
+
+    if (!window.PropertyService) {
+      setTimeout(loadPropertiesData, 150);
+      return;
+    }
+
+    try {
+      const properties = await window.PropertyService.getAll();
+      console.log('املاک دریافت‌شده از دیتابیس لوکال:', properties);
+
+      // ۱. رندر در شبکه کارت‌ها
+      PropertyCardsEngine.renderCards(properties);
+
+      // ۲. رندر در جدول داشبورد
+      const tbody = document.getElementById('dealsTableBody') || document.querySelector('table tbody');
+      if (tbody && properties && properties.length > 0) {
+        tbody.innerHTML = '';
+        properties.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td><span class="stamp-chip ${item.status === 'امضای نهایی شد' ? 'green' : 'blue'}">${item.status || 'فعال'}</span></td>
+            <td style="font-weight: 700;">${item.price || 'توافقی'}</td>
+            <td>${item.title || 'ملک بدون عنوان'} (${item.location || 'تهران'})</td>
+            <td>${item.buyer || item.customer || 'دکتر آرشام فرهمند'}</td>
+            <td style="font-family: monospace; font-weight: 700;">${item.code || 'KR-00'}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+    } catch (err) {
+      console.error('خطا در بارگذاری دیتای املاک:', err);
+    }
+  }
+
+  // =====================================================
+  // 12. Bootstrap
   // =====================================================
   document.addEventListener('DOMContentLoaded', () => {
     ModularTimeEngine.init();
@@ -817,6 +971,7 @@
     ChartInteractions.init();
     TelephonyManager.init();
     ToastManager.init();
+    loadPropertiesData();
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {

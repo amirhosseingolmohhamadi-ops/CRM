@@ -425,6 +425,30 @@
 
       </div>
 
+      <!-- پنل اختصاصی کارت‌های املاک و فایلینگ -->
+      <div class="view-panel" data-view="properties" hidden>
+        <div class="properties-deck-wrapper" style="padding: 1.5rem; max-width: 1300px; margin: 0 auto;">
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h2 style="font-size: 1.4rem; font-weight: 900; color: var(--ink-primary); margin: 0;">کارت‌های فایلینگ و املاک فعال</h2>
+              <p style="font-size: 0.8rem; color: var(--ink-secondary); margin-top: 4px;">مدیریت هوشمند، ارزش‌گذاری و استعلام سریع فایل‌ها</p>
+            </div>
+
+            <button id="btnToggleDeckPrivacy" class="story-btn" style="display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: var(--radius-sm);">
+              <span>🛡️</span>
+              <span id="privacyBtnLabel">حالت امن پرزنت (عادی)</span>
+            </button>
+          </div>
+
+          <!-- کانتینر شبکه کارت‌ها -->
+          <div id="propertiesCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+            <!-- کارت‌ها توسط جاوااسکریپت اینجا چیده می‌شوند -->
+          </div>
+
+        </div>
+      </div>
+
       <!-- پنل ۲: بخش اختصاصی تایمر حرفه‌ای -->
       <div class="view-panel" data-view="timer-section" hidden>
         
@@ -538,7 +562,7 @@
         </div>
       </div>
 
-      <!-- ⚓ داک ناوبری قبلی شما (کپسول شیشه‌ای کلاسیک) -->
+      <!-- ⚓ داک ناوبری کپسول شیشه‌ای -->
       <div class="dock-centering-wrapper">
         <nav class="apple-floating-dock" id="floatingDock">
           <a href="#dashboard" class="dock-tile active" data-view="dashboard" title="داشبورد">
@@ -647,6 +671,11 @@
     </div>
   </div>
 
+  <!-- اسکریپت‌ها با ترتیب دقیق -->
+  <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/dashboard.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
