@@ -93,8 +93,8 @@
     currentFormImages: [],
     cardImageIndices: {},
     calYear: 2026,
-    calMonth: 7, // 0-indexed: 7 = August
-    calSelectedDay: 18,
+    calMonth: 8, // 0-indexed: 8 = September
+    calSelectedDay: 17,
     mockEntities: [
       { id: 'PROP-1049', type: 'ملک', title: 'پنت‌هاوس ۴۵۰ متری الهیه فرشته', targetView: 'properties' },
       { id: 'PROP-1050', type: 'ملک', title: 'ویلای مدرن ۶۵۰ متری شهرک غرب', targetView: 'properties' },
@@ -105,7 +105,7 @@
   };
 
   // =====================================================
-  // 1. Modern Spotlight Calendar Engine (طراحی دقیق تصویر ۳)
+  // 1. Modern Spotlight Calendar Engine (قابلیت کامل ورق زدن و انتخاب)
   // =====================================================
   const ModernCalendarEngine = {
     monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -116,7 +116,10 @@
       this.btnPrev = document.getElementById('btnPrevMonth');
       this.btnNext = document.getElementById('btnNextMonth');
 
-      this.btnPrev?.addEventListener('click', () => {
+      // دکمه ماه قبل
+      this.btnPrev?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         AppState.calMonth--;
         if (AppState.calMonth < 0) {
           AppState.calMonth = 11;
@@ -125,7 +128,10 @@
         this.renderCalendar();
       });
 
-      this.btnNext?.addEventListener('click', () => {
+      // دکمه ماه بعد
+      this.btnNext?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         AppState.calMonth++;
         if (AppState.calMonth > 11) {
           AppState.calMonth = 0;
@@ -143,15 +149,14 @@
       this.monthTitle.textContent = `${this.monthNames[AppState.calMonth]} ${AppState.calYear}`;
       this.grid.innerHTML = '';
 
-      // محاسبه اولین روز ماه و تعداد روزها
+      // محاسبه اولین روز ماه (Monday-based)
       const firstDayOfMonth = new Date(AppState.calYear, AppState.calMonth, 1).getDay();
-      // تبدیل یکشنبه-شنبه به دوشنبه-یکشنبه (Mon=0, Sun=6)
       const startDayIndex = (firstDayOfMonth + 6) % 7;
 
       const daysInCurrentMonth = new Date(AppState.calYear, AppState.calMonth + 1, 0).getDate();
       const daysInPrevMonth = new Date(AppState.calYear, AppState.calMonth, 0).getDate();
 
-      // روزهای ماه قبل
+      // روزهای متعلق به ماه قبل (کمرنگ)
       for (let i = startDayIndex - 1; i >= 0; i--) {
         const span = document.createElement('span');
         span.className = 'cal-day-cell dimmed';
@@ -165,7 +170,8 @@
         span.className = 'cal-day-cell';
         span.textContent = day;
 
-        if (day === AppState.calSelectedDay && AppState.calMonth === 7 && AppState.calYear === 2026) {
+        // هایلایت روز انتخابی
+        if (day === AppState.calSelectedDay) {
           span.classList.add('active');
         }
 
@@ -173,13 +179,13 @@
           this.grid.querySelectorAll('.cal-day-cell').forEach(c => c.classList.remove('active'));
           span.classList.add('active');
           AppState.calSelectedDay = day;
-          ToastManager.show(`تاریخ ${day} ${this.monthNames[AppState.calMonth]} ${AppState.calYear} انتخاب شد.`, 'info');
+          ToastManager.show(`تاریخ ${day} ${this.monthNames[AppState.calMonth]} ${AppState.calYear} تنظیم شد.`, 'info');
         });
 
         this.grid.appendChild(span);
       }
 
-      // پر کردن روزهای ماه بعد
+      // روزهای اول ماه بعد (کمرنگ)
       const totalCells = startDayIndex + daysInCurrentMonth;
       const remaining = (7 - (totalCells % 7)) % 7;
       for (let nextDay = 1; nextDay <= remaining; nextDay++) {
@@ -430,7 +436,7 @@
         });
       }
 
-      // آپلود فایل عکس
+      // آپلود چندین فایل عکس
       const filesInput = document.getElementById('propImageFiles');
       if (filesInput && !filesInput.dataset.bound) {
         filesInput.dataset.bound = "true";
@@ -446,7 +452,7 @@
         });
       }
 
-      // باز و بسته شدن مودال
+      // باز شدن مودال برای ثبت جدید
       const addModal = document.getElementById('addPropertyModal');
       const btnOpenAdd = document.getElementById('btnOpenAddPropertyModal');
       const btnCloseAdd = document.getElementById('btnCloseAddPropertyModal');
@@ -474,7 +480,7 @@
         });
       }
 
-      // ارسال فرم
+      // ثبت و ذخیره اطلاعات در Dexie
       if (formNewProp && !formNewProp.dataset.bound) {
         formNewProp.dataset.bound = "true";
         formNewProp.addEventListener('submit', async (e) => {
@@ -670,7 +676,7 @@
         `;
       }).join('');
 
-      // اتصال رویدادها
+      // اتصال رویدادهای کارت‌ها
       container.querySelectorAll('.btn-next-card-img').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -723,7 +729,7 @@
           const prop = properties[idx];
           if (prop && confirm(`آیا از حذف ملک "${prop.title}" مطمئن هستید؟`)) {
             await window.PropertyService.delete(prop.id);
-            ToastManager.show('ملک حذف شد.', 'warning');
+            ToastManager.show('ملک با موفقیت حذف شد.', 'warning');
             loadPropertiesData();
           }
         });
@@ -731,16 +737,16 @@
 
       container.querySelectorAll('.btn-trigger-share').forEach(btn => {
         btn.addEventListener('click', () => {
-          const idx = parseInt(btn.dataset.index, 10);
-          const prop = properties[idx];
-          if (prop) {
-            AppState.currentSelectedProperty = prop;
+          const index = parseInt(btn.dataset.index, 10);
+          const property = properties[index];
+          if (property) {
+            AppState.currentSelectedProperty = property;
             const modal = document.getElementById('sharePropertyModal');
-            document.getElementById('sharePreviewImg').src = (prop.images && prop.images[0]) || prop.image || '';
-            document.getElementById('sharePreviewTitle').textContent = prop.title || 'ملک';
-            document.getElementById('sharePreviewSpecs').textContent = `${prop.area || '---'} متر • ${prop.rooms || '---'} خواب`;
-            document.getElementById('sharePreviewPrice').textContent = prop.price || 'توافقی';
-            document.getElementById('shareGeneratedText').value = `فایل املاک کوروش\nعنوان: ${prop.title}\nمتراژ: ${prop.area} متر\nقیمت: ${prop.price}\nکد: ${prop.code}`;
+            document.getElementById('sharePreviewImg').src = (property.images && property.images[0]) || property.image || '';
+            document.getElementById('sharePreviewTitle').textContent = property.title || 'ملک';
+            document.getElementById('sharePreviewSpecs').textContent = `${property.area || '---'} متر • ${property.rooms || '---'} خواب`;
+            document.getElementById('sharePreviewPrice').textContent = property.price || 'توافقی';
+            document.getElementById('shareGeneratedText').value = `فایل املاک کوروش\nعنوان: ${property.title}\nمتراژ: ${property.area} متر\nقیمت: ${property.price}\nکد: ${property.code}`;
             modal.style.display = 'flex';
           }
         });
