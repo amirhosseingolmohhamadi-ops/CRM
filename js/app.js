@@ -137,6 +137,7 @@
     setTheme(themeName, manualOverride = false) {
       AppState.theme = themeName;
       this.htmlRoot.setAttribute('data-time-theme', themeName);
+      document.body.setAttribute('data-time-theme', themeName);
       Storage.set('korosh_theme', themeName);
       if (manualOverride) {
         Storage.set('manual_theme_override', true);
@@ -200,6 +201,7 @@
       if (this.phaseLabel) this.phaseLabel.textContent = phaseText;
       if (!Storage.get('manual_theme_override') && this.htmlRoot.getAttribute('data-time-theme') !== phaseTheme) {
         this.htmlRoot.setAttribute('data-time-theme', phaseTheme);
+        document.body.setAttribute('data-time-theme', phaseTheme);
       }
     }
   };
@@ -812,20 +814,84 @@
 
       if (btnPrivacy && !btnPrivacy.dataset.bound) {
         btnPrivacy.dataset.bound = "true";
-        btnPrivacy.addEventListener('click', () => {
+        btnPrivacy.addEventListener('click', (e) => {
+          e.preventDefault();
           AppState.isPrivacyActive = !AppState.isPrivacyActive;
+          
           if (labelPrivacy) {
             labelPrivacy.textContent = AppState.isPrivacyActive 
-              ? 'حالت امن فعال (اطلاعات محو)' 
+              ? 'حالت امن فعال (اطلاعات محو 🛡️)' 
               : 'حالت امن پرزنت (عادی)';
           }
+
           document.querySelectorAll('.card-private-data').forEach(el => {
-            el.style.filter = AppState.isPrivacyActive ? 'blur(5px)' : 'none';
+            el.style.filter = AppState.isPrivacyActive ? 'blur(6px)' : 'none';
+            el.style.opacity = AppState.isPrivacyActive ? '0.35' : '1';
           });
+
           ToastManager.show(
             AppState.isPrivacyActive ? '🛡️ حالت پرزنت امن فعال شد.' : 'حالت عادی بازگردانی شد.',
             'info'
           );
+        });
+      }
+
+      // Modal Property Intake
+      const addModal = document.getElementById('addPropertyModal');
+      const btnOpenAdd = document.getElementById('btnOpenAddPropertyModal');
+      const btnCloseAdd = document.getElementById('btnCloseAddPropertyModal');
+      const formNewProp = document.getElementById('formNewProperty');
+
+      if (btnOpenAdd && addModal && !btnOpenAdd.dataset.bound) {
+        btnOpenAdd.dataset.bound = "true";
+        btnOpenAdd.addEventListener('click', () => {
+          addModal.style.display = 'flex';
+        });
+      }
+
+      if (btnCloseAdd && addModal && !btnCloseAdd.dataset.bound) {
+        btnCloseAdd.dataset.bound = "true";
+        btnCloseAdd.addEventListener('click', () => {
+          addModal.style.display = 'none';
+        });
+      }
+
+      if (addModal && !addModal.dataset.bound) {
+        addModal.dataset.bound = "true";
+        addModal.addEventListener('click', (e) => {
+          if (e.target === addModal) addModal.style.display = 'none';
+        });
+      }
+
+      if (formNewProp && !formNewProp.dataset.bound) {
+        formNewProp.dataset.bound = "true";
+        formNewProp.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          const newPropData = {
+            title: document.getElementById('propTitle')?.value.trim() || 'فایل ملکی جدید',
+            code: document.getElementById('propCode')?.value.trim() || `#KR-${Math.floor(100 + Math.random() * 900)}`,
+            area: document.getElementById('propArea')?.value || '۲۰۰',
+            rooms: document.getElementById('propRooms')?.value || '۳',
+            price: document.getElementById('propPrice')?.value.trim() || 'توافقی',
+            ownerName: document.getElementById('propOwner')?.value.trim() || 'محرمانه',
+            ownerPhone: document.getElementById('propPhone')?.value.trim() || '---',
+            location: document.getElementById('propAddress')?.value.trim() || 'تهران',
+            address: document.getElementById('propAddress')?.value.trim() || 'تهران',
+            buyer: 'ثبت جدید در سامانه',
+            status: 'آماده معامله',
+            image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'
+          };
+
+          if (window.PropertyService) {
+            await window.PropertyService.add(newPropData);
+          }
+
+          formNewProp.reset();
+          if (addModal) addModal.style.display = 'none';
+          ToastManager.show('فایل جدید با موفقیت در دیتابیس ثبت شد ✨', 'success');
+
+          loadPropertiesData();
         });
       }
     },
@@ -849,14 +915,16 @@
         const badgeText = item.tagText || (isUrgent ? 'فوری 🔥' : 'اکازیون ✨');
         const badgeClass = isUrgent ? 'brick' : 'olive';
 
+        const blurStyle = AppState.isPrivacyActive ? 'filter: blur(6px); opacity: 0.35;' : 'filter: none; opacity: 1;';
+
         return `
-          <div class="stamp-kpi-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 0; overflow: hidden; background: var(--paper-card); border: 1.5px solid var(--border-dark); border-radius: var(--radius-sm); box-shadow: 3px 3px 0px var(--shadow-color); transition: transform 0.2s ease;">
+          <div class="stamp-kpi-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 0; overflow: hidden; background: var(--paper-card); border: 1.5px solid var(--border-dark); border-radius: var(--radius-md); box-shadow: 3px 3px 0px var(--shadow-color); transition: transform 0.2s ease;">
             
             <!-- تصویر و نشان‌ها -->
             <div style="position: relative; width: 100%; height: 180px; background: #1a1a1a; overflow: hidden;">
               <img src="${item.image || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'}" 
                    alt="${item.title || 'ملک'}" 
-                   style="width: 100%; height: 100%; object-fit: cover; opacity: 0.92;">
+                   style="width: 100%; height: 100%; object-fit: cover; opacity: 0.95;">
               
               <span class="stamp-chip ${badgeClass}" style="position: absolute; top: 10px; right: 10px; font-size: 0.72rem; font-weight: 800;">
                 ${badgeText}
@@ -865,52 +933,50 @@
               <span style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.68rem; font-family: monospace;">
                 ${item.code || item.id || 'PROP-#'}
               </span>
-
-              ${item.matchedClientsCount ? `
-                <span style="position: absolute; bottom: 10px; left: 10px; background: rgba(30,126,52,0.9); color: #fff; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 700;">
-                  👤 ${item.matchedClientsCount} متقاضی آماده
-                </span>
-              ` : ''}
             </div>
 
-            <!-- مشخصات و محتوا -->
-            <div style="padding: 1rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <!-- مشخصات و محتوا با وضوح و کنتراست کامل -->
+            <div style="padding: 1.1rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 10px;">
               <div>
-                <h4 style="margin: 0 0 6px 0; font-size: 0.98rem; font-weight: 800; color: var(--ink-primary); line-height: 1.4;">
+                <h4 style="margin: 0 0 6px 0; font-size: 1.05rem; font-weight: 900; color: var(--ink-primary); line-height: 1.4;">
                   ${item.title || 'آپارتمان مسکونی'}
                 </h4>
 
-                <p class="card-private-data" style="margin: 0 0 10px 0; font-size: 0.75rem; color: var(--ink-secondary); transition: filter 0.2s;" ${AppState.isPrivacyActive ? 'style="filter: blur(5px);"' : ''}>
-                  📍 ${item.location || item.address || 'تهران'}
-                </p>
-
-                <!-- متراژ، اتاق و طبقه -->
-                <div style="display: flex; gap: 8px; font-size: 0.72rem; color: var(--ink-primary); background: var(--paper-bg); padding: 6px 10px; border-radius: 4px; border: 1px dashed var(--paper-border); margin-bottom: 12px;">
-                  <span>📐 ${item.area || '---'} متر</span>
+                <!-- مشخصات متراژ و خواب -->
+                <div style="display: flex; gap: 8px; font-size: 0.76rem; font-weight: 700; color: var(--ink-secondary); margin-bottom: 8px;">
+                  <span>📐 ${item.area || '۳۲۰'} متر</span>
                   <span>•</span>
-                  <span>🛏 ${item.rooms || item.beds || '---'} خواب</span>
-                  <span>•</span>
-                  <span>🏢 طبقه ${item.floor || '۱'}</span>
+                  <span>🛏 ${item.rooms || item.beds || '۳'} خواب</span>
                 </div>
-              </div>
 
-              <!-- قیمت کل و اکشن‌های سریع -->
-              <div style="padding-top: 10px; border-top: 1px dashed var(--paper-border); display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                  <small style="font-size: 0.65rem; color: var(--ink-secondary); display: block;">ارزش اعلامی:</small>
-                  <strong style="font-size: 0.88rem; color: var(--accent-main); font-weight: 900;">
+                <!-- ارزش اعلامی -->
+                <div style="margin-bottom: 8px;">
+                  <strong style="font-size: 1.1rem; color: #10b981; font-weight: 900;">
                     ${item.price || 'توافقی'}
                   </strong>
                 </div>
 
-                <div style="display: flex; gap: 6px;">
-                  <button class="story-btn" title="تولید آگهی دیوار با AI" onclick="window.showToast('✨ هوش مصنوعی کوروش متن آگهی دیوار را آماده کرد.', 'info')" style="padding: 4px 8px; font-size: 0.85rem;">
-                    ✨
-                  </button>
-                  <button class="story-btn card-private-data" title="اطلاعات محرمانه مالک" onclick="window.showToast('مالک: ${item.ownerName || 'محرمانه'} | تلفن: ${item.ownerPhone || 'ثبت در سامانه'}', 'warning')" style="padding: 4px 8px; font-size: 0.85rem;">
-                    📞
-                  </button>
+                <!-- باکس اطلاعات محرمانه (حالت امن) -->
+                <div style="background: rgba(0, 0, 0, 0.04); padding: 8px 10px; border-radius: var(--radius-sm); border: 1px dashed var(--paper-border); font-size: 0.74rem;">
+                  <div class="card-private-data" style="${blurStyle} transition: filter 0.25s, opacity 0.25s; color: var(--ink-primary);">
+                    <strong>مالک:</strong> ${item.ownerName || 'خانم تهرانی'} (${item.ownerPhone || '09124445566'})
+                  </div>
+                  <div class="card-private-data" style="${blurStyle} margin-top: 4px; transition: filter 0.25s, opacity 0.25s; color: var(--ink-secondary);">
+                    <strong>آدرس:</strong> ${item.address || item.location || 'نیاوران، خیابان مژده'}
+                  </div>
                 </div>
+              </div>
+
+              <!-- اکشن‌های سریع و دکمه‌ها -->
+              <div style="display: flex; gap: 8px; margin-top: auto; padding-top: 8px;">
+                <button class="story-btn" title="تولید آگهی دیوار با AI" onclick="window.showToast('✨ هوش مصنوعی کوروش متن آگهی دیوار را آماده کرد.', 'info')" style="flex: 1; padding: 7px; font-size: 0.8rem; font-weight: 800; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <span>✨</span>
+                  <span>متن آگهی</span>
+                </button>
+                <button class="story-btn" title="مشاهده پرونده" onclick="window.showToast('پرونده ملک ${item.code || ''} باز شد.', 'info')" style="flex: 1; padding: 7px; font-size: 0.8rem; font-weight: 800; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <span>👁️</span>
+                  <span>پرونده</span>
+                </button>
               </div>
 
             </div>
@@ -931,7 +997,6 @@
 
     try {
       const properties = await window.PropertyService.getAll();
-      console.log('املاک دریافت‌شده از دیتابیس لوکال:', properties);
 
       // ۱. رندر در شبکه کارت‌ها
       PropertyCardsEngine.renderCards(properties);
@@ -943,11 +1008,11 @@
         properties.forEach(item => {
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td><span class="stamp-chip ${item.status === 'امضای نهایی شد' ? 'green' : 'blue'}">${item.status || 'فعال'}</span></td>
-            <td style="font-weight: 700;">${item.price || 'توافقی'}</td>
+            <td style="font-family: monospace; font-weight: 700;"><span class="ink-code">${item.code || 'KR-00'}</span></td>
+            <td><strong>${item.buyer || item.customer || 'دکتر آرشام فرهمند'}</strong></td>
             <td>${item.title || 'ملک بدون عنوان'} (${item.location || 'تهران'})</td>
-            <td>${item.buyer || item.customer || 'دکتر آرشام فرهمند'}</td>
-            <td style="font-family: monospace; font-weight: 700;">${item.code || 'KR-00'}</td>
+            <td>${item.price || 'توافقی'}</td>
+            <td><span class="stamp-chip ${item.status === 'امضای نهایی شد' ? 'green' : 'blue'}">${item.status || 'فعال'}</span></td>
           `;
           tbody.appendChild(row);
         });
@@ -987,5 +1052,6 @@
   });
 
   window.showToast = (msg, type) => ToastManager.show(msg, type);
+  window.refreshPropertiesDeck = loadPropertiesData;
 
 })();

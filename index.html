@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>سامانه جامع املاک کوروش | سیستم هوشمند و داینامیک</title>
 
-  <!-- فاوآیکون تب بالای مرورگر (لوگوی اختصاصی کوروش) -->
+  <!-- فاوآیکون اختصاصی کوروش -->
   <link rel="icon" type="image/png" href="assets/icons/favicon.png">
 
   <!-- فونت وزیرمتن -->
@@ -14,6 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
 </head>
 <body class="time-reactive-body">
 
@@ -388,41 +389,7 @@
                 </tr>
               </thead>
               <tbody id="dealsTableBody">
-                <tr>
-                  <td><span class="ink-code">#۹۰۴۲-الهیه</span></td>
-                  <td><strong>دکتر آرشام فرهمند</strong></td>
-                  <td>پنت‌هاوس دوبلکس، خیابان فرشته (کد ۱۰۴۹)</td>
-                  <td>۱۵۵,۰۰۰,۰۰۰,۰۰۰ تومان</td>
-                  <td><span class="stamp-chip green">امضای نهایی شد</span></td>
-                </tr>
-                <tr>
-                  <td><span class="ink-code">#۹۰۴۳-شهرک</span></td>
-                  <td><strong>مهندس سهراب پناهی</strong></td>
-                  <td>ویلای مدرن، ایران‌زمین (کد ۱۰۵۰)</td>
-                  <td>۱۸,۰۰۰,۰۰۰,۰۰۰ تومان رهن</td>
-                  <td><span class="stamp-chip blue">تحویل کلید</span></td>
-                </tr>
-                <tr>
-                  <td><span class="ink-code">#۹۰۴۴-اندرزگو</span></td>
-                  <td><strong>هلدینگ آرمان سازه</strong></td>
-                  <td>عرصه اداری، تقاطع اندرزگو</td>
-                  <td>۲۸۰,۰۰۰,۰۰۰,۰۰۰ تومان</td>
-                  <td><span class="stamp-chip orange">استعلام شهرداری</span></td>
-                </tr>
-                <tr>
-                  <td><span class="ink-code">#۹۰۴۵-نیاوران</span></td>
-                  <td><strong>خانم مهندس تهرانی</strong></td>
-                  <td>آپارتمان ۳۲۰ متری نوساز، خیابان مژده</td>
-                  <td>۶۸,۰۰۰,۰۰۰,۰۰۰ تومان</td>
-                  <td><span class="stamp-chip green">بیعانه ثبت شد</span></td>
-                </tr>
-                <tr>
-                  <td><span class="ink-code">#۹۰۴۶-فرمانیه</span></td>
-                  <td><strong>دکتر کیوان صادقی</strong></td>
-                  <td>برج باغ مسکونی، طبقه ۱۸</td>
-                  <td>۱۱۰,۰۰۰,۰۰۰,۰۰۰ تومان</td>
-                  <td><span class="stamp-chip blue">آماده مبایعه‌نامه</span></td>
-                </tr>
+                <!-- رندر از دیتابیس Dexie توسط app.js -->
               </tbody>
             </table>
           </div>
@@ -434,29 +401,108 @@
       <div class="view-panel" data-view="properties" hidden>
         <div class="properties-deck-wrapper" style="padding: 1.5rem; max-width: 1300px; margin: 0 auto;">
           
+          <!-- بنر تصویری پانوراما بالای برگه املاک -->
+          <div class="properties-hero-banner" style="position: relative; width: 100%; height: 200px; border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1.5rem; border: 1.5px solid var(--border-dark); box-shadow: 3px 3px 0px var(--shadow-color);">
+            <img 
+              src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80" 
+              alt="پنت‌هاوس لوکس کوروش" 
+              style="width: 100%; height: 100%; object-fit: cover; object-position: center 40%;"
+            >
+            <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.78) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.2rem;">
+              <span class="stamp-chip green" style="align-self: flex-start; margin-bottom: 4px; font-size: 0.68rem; font-weight: 800;">
+                ویترین اختصاصی فایلینگ املاک کوروش
+              </span>
+              <h2 style="color: #fff; margin: 0; font-size: 1.45rem; font-weight: 900; text-shadow: 0 2px 6px rgba(0,0,0,0.6);">
+                آرشیو لوکس و فایل‌های فعال منطقه
+              </h2>
+              <p style="color: rgba(255,255,255,0.85); font-size: 0.78rem; margin: 3px 0 0 0;">
+                مدیریت ارزش‌گذاری، اسناد رسمی تک‌برگ و تولید آنی آگهی دیوار
+              </p>
+            </div>
+          </div>
+
+          <!-- نوار کنترل بالای کارت‌ها -->
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;">
             <div>
-              <h2 style="font-size: 1.4rem; font-weight: 900; color: var(--ink-primary); margin: 0;">کارت‌های فایلینگ و املاک فعال</h2>
-              <p style="font-size: 0.8rem; color: var(--ink-secondary); margin-top: 4px;">مدیریت هوشمند، ارزش‌گذاری و استعلام سریع فایل‌ها</p>
+              <h2 style="font-size: 1.3rem; font-weight: 900; color: var(--ink-primary); margin: 0;">کارت‌های فایلینگ و املاک فعال</h2>
+              <p style="font-size: 0.78rem; color: var(--ink-secondary); margin-top: 3px;">مدیریت هوشمند، ارزش‌گذاری و استعلام سریع فایل‌ها</p>
             </div>
 
-            <button id="btnToggleDeckPrivacy" class="story-btn" style="display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: var(--radius-sm);">
-              <span>🛡️</span>
-              <span id="privacyBtnLabel">حالت امن پرزنت (عادی)</span>
-            </button>
+            <div style="display: flex; gap: 8px;">
+              <button id="btnOpenAddPropertyModal" class="story-btn" style="display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius-sm); background: var(--accent-main); color: #fff; border: 1.5px solid var(--border-dark); font-weight: 800; cursor: pointer; box-shadow: 2px 2px 0px var(--border-dark);">
+                <span>➕</span>
+                <span>ثبت فایل جدید</span>
+              </button>
+
+              <button id="btnToggleDeckPrivacy" class="story-btn" style="display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border-dark); box-shadow: 2px 2px 0px var(--border-dark);">
+                <span>🛡️</span>
+                <span id="privacyBtnLabel">حالت امن پرزنت (عادی)</span>
+              </button>
+            </div>
           </div>
 
           <!-- کانتینر شبکه کارت‌ها -->
-          <div id="propertiesCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
-            <!-- کارت‌ها توسط جاوااسکریپت اینجا چیده می‌شوند -->
+          <div id="propertiesCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1.5rem;">
+            <!-- کارت‌ها توسط app.js رندر می‌شوند -->
           </div>
 
         </div>
       </div>
 
+      <!-- مودال مدرن ثبت ملک جدید -->
+      <div class="call-dialog-overlay" id="addPropertyModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 99999;">
+        <div style="background: var(--paper-card); border: 2px solid var(--border-dark); border-radius: var(--radius-md); width: 90%; max-width: 520px; padding: 1.4rem; color: var(--ink-primary); box-shadow: 6px 6px 0px var(--border-dark);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1.5px dashed var(--paper-border); padding-bottom: 0.6rem;">
+            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 900; color: var(--accent-main);">🏢 ثبت فایل ملکی در سامانه</h3>
+            <button id="btnCloseAddPropertyModal" style="background: none; border: none; font-size: 1.2rem; color: var(--ink-secondary); cursor: pointer;">✕</button>
+          </div>
+
+          <form id="formNewProperty" style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; gap: 10px;">
+              <div style="flex: 2;">
+                <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 4px; color: var(--ink-secondary);">عنوان فایل</label>
+                <input type="text" id="propTitle" required placeholder="مثلاً: پنت‌هاوس دوبلکس فرشته" style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.82rem;">
+              </div>
+              <div style="flex: 1;">
+                <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 4px; color: var(--ink-secondary);">کد ملک</label>
+                <input type="text" id="propCode" required placeholder="#KR-055" style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.82rem;">
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+              <div style="flex: 1;">
+                <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 4px; color: var(--ink-secondary);">متراژ (متر)</label>
+                <input type="number" id="propArea" required placeholder="۲۵۰" style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.82rem;">
+              </div>
+              <div style="flex: 1;">
+                <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 4px; color: var(--ink-secondary);">تعداد خواب</label>
+                <input type="number" id="propRooms" required placeholder="۳" style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.82rem;">
+              </div>
+            </div>
+
+            <div>
+              <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 4px; color: var(--ink-secondary);">قیمت اعلامی (تومان)</label>
+              <input type="text" id="propPrice" required placeholder="مثلاً: ۶۸,۰۰۰,۰۰۰,۰۰۰ تومان" style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.82rem;">
+            </div>
+
+            <div style="background: rgba(0,0,0,0.03); border: 1px dashed var(--paper-border); padding: 10px; border-radius: 8px; margin-top: 4px;">
+              <label style="font-size: 0.72rem; font-weight: 800; display: block; margin-bottom: 4px; color: var(--accent-sub);">🔒 اطلاعات محرمانه (پوشش حالت پرزنت امن)</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" id="propOwner" placeholder="نام مالک" style="flex: 1; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.8rem;">
+                <input type="text" id="propPhone" placeholder="شماره تماس مالک" style="flex: 1; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.8rem;">
+              </div>
+              <input type="text" id="propAddress" placeholder="آدرس دقیق و پلاک محرمانه" style="width: 100%; margin-top: 6px; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.8rem;">
+            </div>
+
+            <button type="submit" style="margin-top: 8px; padding: 10px; border-radius: 8px; background: #3f6e37; color: white; border: 1.5px solid var(--border-dark); font-weight: 800; font-size: 0.85rem; cursor: pointer; box-shadow: 2px 2px 0px var(--border-dark);">
+              ذخیره آنی در سامانه ✨
+            </button>
+          </form>
+        </div>
+      </div>
+
       <!-- پنل ۲: بخش اختصاصی تایمر حرفه‌ای -->
       <div class="view-panel" data-view="timer-section" hidden>
-        
         <div class="timer-suite-layout">
           
           <div class="timer-dial-card">
@@ -533,7 +579,6 @@
           </div>
 
         </div>
-
       </div>
 
       <!-- پنل تنظیمات و تغییر تم رنگی سامانه -->
