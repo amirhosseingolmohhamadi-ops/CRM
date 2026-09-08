@@ -839,7 +839,7 @@
         });
       }
 
-      // آپلود چندین عکس همزمان با فشرده‌سازی خودکار جهت ذخیره تضمینی
+      // آپلود چندین عکس همزمان با فشرده‌سازی خودکار
       const filesInput = document.getElementById('propImageFiles');
       if (filesInput && !filesInput.dataset.bound) {
         filesInput.dataset.bound = "true";
@@ -930,7 +930,7 @@
       this.initShareModal();
     },
 
-    // فشرده‌سازی کلاینت‌ساید برای بهینگی Dexie و لود سریع
+    // فشرده‌سازی کلاینت‌ساید برای بهینگی Dexie
     compressImageFile(file, maxWidth = 900, quality = 0.8) {
       return new Promise((resolve) => {
         const reader = new FileReader();
@@ -1160,7 +1160,7 @@
                 </div>
               ` : ''}
 
-              <!-- دکمه‌های سریع ویرایش و حذف -->
+              <!-- دکمه‌های سریع ویرایش و حذف با آیکون‌های SVG -->
               <div style="position: absolute; top: 8px; left: 8px; display: flex; gap: 4px; z-index: 2;">
                 <button class="btn-card-edit" data-idx="${idx}" title="ویرایش ملک" style="background: rgba(0,0,0,0.75); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; width: 24px; height: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
@@ -1188,13 +1188,14 @@
                 ${item.price || 'توافقی'}
               </div>
 
-              <!-- کادر اطلاعات محرمانه -->
+              <!-- کادر اطلاعات محرمانه همراه با آیکون لوکیشن SVG -->
               <div style="background: rgba(0, 0, 0, 0.025); padding: 5px 8px; border-radius: 4px; border: 1px dashed var(--paper-border); font-size: 0.7rem; margin-top: 2px;">
                 <div class="card-private-data" style="${blurStyle} transition: filter 0.2s, opacity 0.2s; color: var(--ink-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                   <strong>مالک:</strong> ${item.ownerName || 'ثبت نشده'} (${item.ownerPhone || '---'})
                 </div>
-                <div class="card-private-data" style="${blurStyle} margin-top: 2px; transition: filter 0.2s, opacity 0.2s; color: var(--ink-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                  ${item.address || item.location || 'تهران'}
+                <div class="card-private-data" style="${blurStyle} margin-top: 2px; transition: filter 0.2s, opacity 0.2s; color: var(--ink-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>${item.address || item.location || 'تهران'}</span>
                 </div>
               </div>
 
