@@ -26,7 +26,7 @@
     <aside class="storybook-sidebar" id="mainSidebar">
       <div class="story-brand">
         <div class="stamp-avatar" style="overflow: hidden; padding: 2px;">
-          <img src="assets/icons/favicon.png" alt="لوگوی کوروش" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.outerHTML='🏢'">
+          <img src="assets/icons/favicon.png" alt="لوگوی کوروش" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'">
         </div>
         <div class="brand-text">
           <h2>کوروش</h2>
@@ -36,31 +36,45 @@
 
       <nav class="story-nav">
         <button class="nav-tab active" data-view="dashboard">
-          <span class="icon">📊</span>
+          <span class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          </span>
           <span>داشبورد جامع</span>
         </button>
         <button class="nav-tab" data-view="timer-section">
-          <span class="icon">⏳</span>
+          <span class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
           <span>تایمر حرفه‌ای</span>
         </button>
         <button class="nav-tab" data-view="properties">
-          <span class="icon">🏘️</span>
+          <span class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </span>
           <span>املاک و فایلینگ</span>
         </button>
         <button class="nav-tab" data-view="campaigns">
-          <span class="icon">📢</span>
+          <span class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+          </span>
           <span>کمپین‌های جذب</span>
         </button>
         <button class="nav-tab" data-view="customers">
-          <span class="icon">👥</span>
+          <span class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
           <span>دفتر متقاضیان</span>
         </button>
         <button class="nav-tab" data-view="contracts">
-          <span class="icon">✒️</span>
+          <span class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </span>
           <span>دفتر اسناد و قرارداد</span>
         </button>
         <button class="nav-tab" data-view="settings">
-          <span class="icon">⚙️</span>
+          <span class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </span>
           <span>تنظیمات و تغییر تم</span>
         </button>
       </nav>
@@ -87,7 +101,7 @@
         <div class="daytime-status-tile" id="daytimePhaseTile">
           <div class="phase-meta">
             <span class="phase-sub">نوبت زمانی روز</span>
-            <strong class="phase-main" id="daytimePhaseLabel">ظهر 🌤️</strong>
+            <strong class="phase-main" id="daytimePhaseLabel">ظهر</strong>
           </div>
           <span class="phase-glow-dot"></span>
         </div>
@@ -101,7 +115,7 @@
           <div class="att-row"><small>ورود ثبت‌شده:</small> <strong id="workInTime">۰۸:۱۵:۲۰</strong></div>
           <div class="att-row"><small>خروج پیش‌بینی:</small> <strong id="workOutTime">۱۸:۳۰:۰۰</strong></div>
         </div>
-        <button class="btn-punch-action" id="btnClockInOut">ثبت وضعیت خروج ⏱️</button>
+        <button class="btn-punch-action" id="btnClockInOut">ثبت وضعیت خروج</button>
       </div>
 
       <div class="sidebar-stamp-seal">
@@ -124,7 +138,7 @@
           <span class="date-scroll" id="smartDateDisplay">در حال دریافت تاریخ...</span>
         </div>
 
-        <!-- ستون مرکز برای داینامیک آیلند -->
+        <!-- ستون مرکز برای داینامیک آیلند (بدون قفل و استیکر) -->
         <div class="topbar-center-slot">
           <div class="apple-true-island" id="smartIsland" data-state="idle">
             
@@ -132,10 +146,8 @@
               <rect class="timer-progress-track" x="1.5" y="1.5" rx="17.5" ry="17.5"></rect>
             </svg>
 
-            <!-- ۱. حالت بیکار: ساعت ورق‌زن LTR -->
+            <!-- ۱. حالت بیکار: ساعت ورق‌زن مینیمال بدون قفل -->
             <div class="island-idle-view" dir="ltr">
-              <span class="island-lock-ico">🔒</span>
-              
               <div class="flip-clock-mini">
                 <div class="flip-card">
                   <span class="flip-num" id="flipHours">11</span>
@@ -210,13 +222,15 @@
 
         <div class="topbar-left-controls">
           <div class="retro-search-input">
-            <span class="search-glyph">🔍</span>
+            <span class="search-glyph">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
             <input type="text" id="globalSearchInput" placeholder="جستجوی پلاک ثبتی، نام خریدار... (Ctrl + K)">
             <span class="key-combo">⌘ K</span>
           </div>
 
           <button class="vintage-call-btn" id="btnSimulateCall">
-            <span class="bell-anim">📞</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             <span>تماس ورودی</span>
           </button>
         </div>
@@ -304,7 +318,7 @@
                 </div>
 
                 <div class="d-bar-slot active-high" data-amount="۳۸۴ میلیارد" data-deals="۲۸ قرارداد">
-                  <div class="record-bubble">رکورد سال 🔥 ۳۸۴ م.ت</div>
+                  <div class="record-bubble">رکورد سال: ۳۸۴ م.ت</div>
                   <div class="d-bar-tube"><div class="d-fill active" style="height: 94%;"></div></div>
                   <span class="month-label active">مرداد</span>
                 </div>
@@ -389,7 +403,7 @@
                 </tr>
               </thead>
               <tbody id="dealsTableBody">
-                <!-- رندر از دیتابیس Dexie توسط app.js -->
+                <!-- رندر توسط app.js -->
               </tbody>
             </table>
           </div>
@@ -410,12 +424,12 @@
 
             <div style="display: flex; gap: 8px;">
               <button id="btnOpenAddPropertyModal" class="story-btn" style="display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius-sm); background: var(--accent-main); color: #fff; border: 1.5px solid var(--border-dark); font-weight: 800; cursor: pointer; box-shadow: 2px 2px 0px var(--border-dark);">
-                <span>➕</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 <span>ثبت فایل جدید</span>
               </button>
 
               <button id="btnToggleDeckPrivacy" class="story-btn" style="display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border-dark); box-shadow: 2px 2px 0px var(--border-dark);">
-                <span>🛡️</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 <span id="privacyBtnLabel">حالت امن پرزنت (عادی)</span>
               </button>
             </div>
@@ -429,11 +443,11 @@
         </div>
       </div>
 
-      <!-- مودال ثبت و ویرایش ملک (با پشتیبانی از چندین عکس همزمان) -->
+      <!-- مودال ثبت و ویرایش ملک -->
       <div class="call-dialog-overlay" id="addPropertyModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 99999;">
         <div style="background: var(--paper-card); border: 2px solid var(--border-dark); border-radius: var(--radius-md); width: 90%; max-width: 500px; padding: 1.4rem; color: var(--ink-primary); box-shadow: 6px 6px 0px var(--border-dark); max-height: 90vh; overflow-y: auto;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1.5px dashed var(--paper-border); padding-bottom: 0.6rem;">
-            <h3 id="propModalTitle" style="margin: 0; font-size: 1.05rem; font-weight: 900; color: var(--accent-main);">🏢 ثبت مشخصات فایل ملک</h3>
+            <h3 id="propModalTitle" style="margin: 0; font-size: 1.05rem; font-weight: 900; color: var(--accent-main);">ثبت مشخصات فایل ملک</h3>
             <button id="btnCloseAddPropertyModal" style="background: none; border: none; font-size: 1.2rem; color: var(--ink-secondary); cursor: pointer;">✕</button>
           </div>
 
@@ -443,10 +457,11 @@
             <!-- کادر آپلود چند عکس و آلبوم پیش‌نمایش -->
             <div style="border: 1.5px dashed var(--paper-border); border-radius: 8px; padding: 8px; text-align: center; background: rgba(0,0,0,0.02); display: flex; flex-direction: column; align-items: center; gap: 6px;">
               <div id="propImagesAlbumPreview" style="display: flex; gap: 6px; overflow-x: auto; width: 100%; min-height: 80px; align-items: center; padding-bottom: 4px;">
-                <!-- پیش‌نمایش عکس‌های انتخاب‌شده اینجا نشان داده می‌شود -->
+                <!-- پیش‌نمایش تصاویر -->
               </div>
-              <label for="propImageFiles" class="story-btn" style="cursor: pointer; padding: 5px 12px; font-size: 0.74rem; font-weight: 800; display: inline-block;">
-                📸 انتخاب و آپلود عکس‌ها (تکی یا چندتایی)
+              <label for="propImageFiles" class="story-btn" style="cursor: pointer; padding: 6px 14px; font-size: 0.74rem; font-weight: 800; display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                <span>انتخاب و آپلود عکس‌ها</span>
               </label>
               <input type="file" id="propImageFiles" accept="image/*" multiple style="display: none;">
             </div>
@@ -479,7 +494,7 @@
             </div>
 
             <div style="background: rgba(0,0,0,0.03); border: 1px dashed var(--paper-border); padding: 8px 10px; border-radius: 6px;">
-              <label style="font-size: 0.7rem; font-weight: 800; display: block; margin-bottom: 4px; color: var(--accent-sub);">🔒 اطلاعات محرمانه (مالک و آدرس)</label>
+              <label style="font-size: 0.7rem; font-weight: 800; display: block; margin-bottom: 4px; color: var(--accent-sub);">اطلاعات محرمانه (مالک و آدرس)</label>
               <div style="display: flex; gap: 6px;">
                 <input type="text" id="propOwner" placeholder="نام مالک" style="flex: 1; padding: 6px 8px; border-radius: 5px; border: 1px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.78rem;">
                 <input type="text" id="propPhone" placeholder="شماره تماس مالک" style="flex: 1; padding: 6px 8px; border-radius: 5px; border: 1px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.78rem;">
@@ -488,7 +503,7 @@
             </div>
 
             <button type="submit" id="btnSubmitPropModal" style="margin-top: 6px; padding: 9px; border-radius: 8px; background: #3f6e37; color: white; border: 1.5px solid var(--border-dark); font-weight: 800; font-size: 0.84rem; cursor: pointer; box-shadow: 2px 2px 0px var(--border-dark);">
-              ذخیره و درج در سامانه ✨
+              ذخیره و درج در سامانه
             </button>
           </form>
         </div>
@@ -499,8 +514,8 @@
         <div style="background: var(--paper-card); border: 2px solid var(--border-dark); border-radius: var(--radius-md); width: 90%; max-width: 480px; padding: 1.4rem; color: var(--ink-primary); box-shadow: 6px 6px 0px var(--border-dark); display: flex; flex-direction: column; gap: 12px;">
           
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px dashed var(--paper-border); padding-bottom: 0.6rem;">
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <span style="font-size: 1.2rem;">📤</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
               <h3 style="margin: 0; font-size: 1.05rem; font-weight: 900; color: var(--accent-main);">ارسال و پرزنت فایل ملک</h3>
             </div>
             <button id="btnCloseShareModal" style="background: none; border: none; font-size: 1.2rem; color: var(--ink-secondary); cursor: pointer;">✕</button>
@@ -537,18 +552,18 @@
             <textarea id="shareGeneratedText" rows="5" readonly style="width: 100%; border-radius: 8px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); padding: 8px; font-size: 0.76rem; line-height: 1.5; resize: none;"></textarea>
           </div>
 
-          <!-- دکمه‌های پیام‌رسان‌ها -->
+          <!-- دکمه‌های پیام‌رسان‌ها با آیکون‌های وکتور تمیز -->
           <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 2px;">
-            <button id="btnShareTelegram" class="story-btn" style="padding: 8px; font-weight: 800; font-size: 0.78rem; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 4px;">
-              <span>✈️</span>
+            <button id="btnShareTelegram" class="story-btn" style="padding: 8px; font-weight: 800; font-size: 0.78rem; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
               <span>تلگرام</span>
             </button>
-            <button id="btnShareWhatsapp" class="story-btn" style="padding: 8px; font-weight: 800; font-size: 0.78rem; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 4px;">
-              <span>💬</span>
+            <button id="btnShareWhatsapp" class="story-btn" style="padding: 8px; font-weight: 800; font-size: 0.78rem; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
               <span>واتساپ</span>
             </button>
-            <button id="btnCopyShareText" class="story-btn" style="padding: 8px; font-weight: 800; font-size: 0.78rem; border-radius: 6px; background: var(--accent-main); color: #fff; border: 1.5px solid var(--border-dark); display: flex; align-items: center; justify-content: center; gap: 4px;">
-              <span>📋</span>
+            <button id="btnCopyShareText" class="story-btn" style="padding: 8px; font-weight: 800; font-size: 0.78rem; border-radius: 6px; background: var(--accent-main); color: #fff; border: 1.5px solid var(--border-dark); display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
               <span>کپی متن</span>
             </button>
           </div>
@@ -595,7 +610,7 @@
               </div>
               <div class="hgb-text">
                 <h4>شمارش معکوس از ۱ ثانیه تا ۱ سال</h4>
-                <p>تایمر در داینامیک آیلند با ساعت شنی فعال و نوار نئونی دور کپسول پر می‌شود و در پایان با صدای دینگ اعلان می‌دهد.</p>
+                <p>تایمر در داینامیک آیلند با ساعت شنی فعال و نوار نئونی دور کپسول پر می‌شود و در پایان با صدای زنگ اعلان می‌دهد.</p>
               </div>
             </div>
 
@@ -627,8 +642,8 @@
             </div>
 
             <div class="timer-action-dock">
-              <button class="btn-start-master-timer" id="btnLaunchCustomTimer">کوک کردن و ارسال به داینامیک آیلند 🚀</button>
-              <button class="btn-test-sound" id="btnTestDing">تست صدای زنگ دینگگگگ 🔔</button>
+              <button class="btn-start-master-timer" id="btnLaunchCustomTimer">کوک کردن و ارسال به داینامیک آیلند</button>
+              <button class="btn-test-sound" id="btnTestDing">تست صدای زنگ</button>
             </div>
 
           </div>
@@ -667,31 +682,43 @@
         </div>
       </div>
 
-      <!-- ⚓ داک ناوبری کپسول شیشه‌ای -->
+      <!-- ⚓ داک ناوبری کپسول شیشه‌ای (آیکون‌های برداری SVG تمیز بدون استیکر) -->
       <div class="dock-centering-wrapper">
         <nav class="apple-floating-dock" id="floatingDock">
           <a href="#dashboard" class="dock-tile active" data-view="dashboard" title="داشبورد">
-            <span class="tile-icon">📊</span>
+            <span class="tile-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+            </span>
             <span class="tile-label">داشبورد</span>
           </a>
           <a href="#timer-section" class="dock-tile" data-view="timer-section" title="تایمر">
-            <span class="tile-icon">⏳</span>
+            <span class="tile-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </span>
             <span class="tile-label">تایمر</span>
           </a>
           <a href="#properties" class="dock-tile" data-view="properties" title="املاک">
-            <span class="tile-icon">🏘️</span>
+            <span class="tile-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </span>
             <span class="tile-label">املاک</span>
           </a>
           <a href="#campaigns" class="dock-tile" data-view="campaigns" title="کمپین‌ها">
-            <span class="tile-icon">📢</span>
+            <span class="tile-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+            </span>
             <span class="tile-label">کمپین</span>
           </a>
           <a href="#contracts" class="dock-tile" data-view="contracts" title="اسناد">
-            <span class="tile-icon">✒️</span>
+            <span class="tile-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </span>
             <span class="tile-label">اسناد</span>
           </a>
           <a href="#settings" class="dock-tile" data-view="settings" title="تنظیمات تم">
-            <span class="tile-icon">🎨</span>
+            <span class="tile-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </span>
             <span class="tile-label">تم رنگی</span>
           </a>
           <button class="dock-dots-menu" id="dockOptionsBtn">•••</button>
@@ -706,7 +733,7 @@
   <div class="floating-ai-orb-button" id="btnOpenAiOrb" title="گفتگو با هوش مصنوعی کوروش">
     <span class="orb-pulse-wave"></span>
     <div class="orb-core">
-      <span>✨</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
     </div>
     <span class="orb-title-tooltip">هوش مصنوعی کوروش</span>
   </div>
@@ -715,7 +742,9 @@
   <div class="ai-orb-drawer" id="aiDrawer">
     <div class="ai-drawer-header">
       <div class="aid-title">
-        <span class="aid-icon">✨</span>
+        <span class="aid-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+        </span>
         <div>
           <strong>هوش مصنوعی کوروش</strong>
           <small>پاسخگوی امور فایلینگ، نرخ‌ها و قراردادها</small>
@@ -743,7 +772,9 @@
       </div>
 
       <div class="caller-profile">
-        <div class="caller-wood-avatar">👤</div>
+        <div class="caller-wood-avatar">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
         <div class="caller-data">
           <h3>خانم کریمی</h3>
           <p>بودجه: ۱۵ تا ۲۰ میلیارد تومان • متقاضی خرید ویلا</p>

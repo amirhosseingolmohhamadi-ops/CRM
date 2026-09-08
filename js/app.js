@@ -178,26 +178,26 @@
         if (this.dayNum) this.dayNum.textContent = '۱۵';
       }
 
-      let phaseText = 'ظهر 🌤️';
+      let phaseText = 'ظهر';
       let phaseTheme = 'noon';
 
       if (rawHours >= 4 && rawHours < 7) {
-        phaseText = 'صبح زود 🌅';
+        phaseText = 'صبح زود';
         phaseTheme = 'dawn';
       } else if (rawHours >= 7 && rawHours < 12) {
-        phaseText = 'صبح ☀️';
+        phaseText = 'صبح';
         phaseTheme = 'morning';
       } else if (rawHours >= 12 && rawHours < 16) {
-        phaseText = 'ظهر 🌤️';
+        phaseText = 'ظهر';
         phaseTheme = 'noon';
       } else if (rawHours >= 16 && rawHours < 19) {
-        phaseText = 'عصر 🌇';
+        phaseText = 'عصر';
         phaseTheme = 'sunset';
       } else if (rawHours >= 19 && rawHours < 23) {
-        phaseText = 'شب 🌙';
+        phaseText = 'شب';
         phaseTheme = 'night';
       } else {
-        phaseText = 'بامداد 🌌';
+        phaseText = 'بامداد';
         phaseTheme = 'midnight';
       }
 
@@ -307,7 +307,7 @@
 
       this.btnTestDing?.addEventListener('click', () => {
         SoundSynthesizer.playDing();
-        ToastManager.show('🔔 در حال پخش صدای دینگگگگگ...', 'info');
+        ToastManager.show('در حال پخش صدای زنگ...', 'info');
       });
     },
 
@@ -348,10 +348,10 @@
         this.island.setAttribute('data-state', 'timer');
         if (this.timerDisplay) this.timerDisplay.textContent = '00:00';
         const sub = document.getElementById('timerSubMsg');
-        if (sub) sub.textContent = '⏰ زمان پایان یافت!';
+        if (sub) sub.textContent = 'زمان پایان یافت!';
       }
 
-      ToastManager.show('🔔 دینگگگگگ! زمان تایمر به پایان رسید.', 'warning');
+      ToastManager.show('زمان تایمر به پایان رسید.', 'warning');
 
       setTimeout(() => {
         if (this.island) {
@@ -476,11 +476,11 @@
           bMsg.className = 'ai-speech-bubble bot';
 
           if (text.includes('قرارداد') || text.includes('الهیه')) {
-            bMsg.innerHTML = `📄 قرارداد پنت‌هاوس الهیه به ارزش ۱۵۵ میلیارد تومان آماده است و جلسه امضای آن برای ساعت ۱۸:۳۰ در سالن VIP هماهنگ گردید.`;
+            bMsg.innerHTML = `پرونده و پیش‌نویس مبایعه‌نامه الهیه به ارزش ۱۵۵ میلیارد تومان ثبت گردید و جهت امضای نهایی آماده است.`;
           } else if (text.includes('سود') || text.includes('گردش')) {
-            bMsg.innerHTML = `📊 گردش مالی این ماه ۳۸۴ میلیارد تومان است که کمیسیون خالص ۲.۹ میلیارد تومان برآورد شده است.`;
+            bMsg.innerHTML = `گردش مالی این ماه ۳۸۴ میلیارد تومان است که کمیسیون برآوردی ۲.۹ میلیارد تومان محاسبه شده است.`;
           } else {
-            bMsg.innerHTML = `✨ دستور شما بررسی شد. پرونده‌های مربوط به "<strong>${text}</strong>" پالایش شدند و در دسترس مشاوران قرار دارند.`;
+            bMsg.innerHTML = `درخواست شما بررسی شد. نتایج و فایل‌های مربوط به "<strong>${text}</strong>" استخراج گردیدند.`;
           }
 
           this.chat.appendChild(bMsg);
@@ -677,12 +677,12 @@
         if (!this.isPunchedOut) {
           this.isPunchedOut = true;
           this.workOutTarget.textContent = timeStr;
-          this.btnPunch.textContent = 'ورود مجدد به شیفت ⏱️';
+          this.btnPunch.textContent = 'ورود مجدد به شیفت';
           this.btnPunch.style.background = '#3f6e37';
           ToastManager.show(`خروج شما در ساعت ${timeStr} ثبت شد.`, 'info');
         } else {
           this.isPunchedOut = false;
-          this.btnPunch.textContent = 'ثبت وضعیت خروج ⏱️';
+          this.btnPunch.textContent = 'ثبت وضعیت خروج';
           this.btnPunch.style.background = 'var(--accent-main)';
           ToastManager.show(`ورود مجدد شما در ساعت ${timeStr} ثبت شد.`, 'success');
         }
@@ -823,7 +823,7 @@
           
           if (labelPrivacy) {
             labelPrivacy.textContent = AppState.isPrivacyActive 
-              ? 'حالت امن فعال (محو 🛡️)' 
+              ? 'حالت امن فعال (محو)' 
               : 'حالت امن پرزنت (عادی)';
           }
 
@@ -833,13 +833,13 @@
           });
 
           ToastManager.show(
-            AppState.isPrivacyActive ? '🛡️ حالت پرزنت امن فعال شد.' : 'حالت عادی بازگردانی شد.',
+            AppState.isPrivacyActive ? 'حالت پرزنت امن فعال شد.' : 'حالت عادی بازگردانی شد.',
             'info'
           );
         });
       }
 
-      // آپلود چندین عکس همزمان
+      // آپلود چندین عکس همزمان با فشرده‌سازی خودکار جهت ذخیره تضمینی
       const filesInput = document.getElementById('propImageFiles');
       if (filesInput && !filesInput.dataset.bound) {
         filesInput.dataset.bound = "true";
@@ -848,8 +848,8 @@
           if (files.length === 0) return;
 
           for (const file of files) {
-            const base64 = await this.readFileAsDataURL(file);
-            AppState.currentFormImages.push(base64);
+            const compressedBase64 = await this.compressImageFile(file, 900, 0.82);
+            AppState.currentFormImages.push(compressedBase64);
           }
           this.renderAlbumPreview();
         });
@@ -865,8 +865,8 @@
         btnOpenAdd.dataset.bound = "true";
         btnOpenAdd.addEventListener('click', () => {
           this.resetForm();
-          document.getElementById('propModalTitle').textContent = '🏢 ثبت مشخصات فایل ملک';
-          document.getElementById('btnSubmitPropModal').textContent = 'ذخیره و درج در سامانه ✨';
+          document.getElementById('propModalTitle').textContent = 'ثبت مشخصات فایل ملک';
+          document.getElementById('btnSubmitPropModal').textContent = 'ذخیره و درج در سامانه';
           addModal.style.display = 'flex';
         });
       }
@@ -914,10 +914,10 @@
           if (window.PropertyService) {
             if (editId) {
               await window.PropertyService.update(editId, propData);
-              ToastManager.show('مشخصات ملک با موفقیت ویرایش شد ✏️', 'success');
+              ToastManager.show('مشخصات ملک با موفقیت ویرایش شد.', 'success');
             } else {
               await window.PropertyService.add(propData);
-              ToastManager.show('فایل ملک جدید همراه با آلبوم عکس ثبت شد ✨', 'success');
+              ToastManager.show('فایل ملک جدید همراه با عکس‌ها ذخیره گردید.', 'success');
             }
           }
 
@@ -930,10 +930,32 @@
       this.initShareModal();
     },
 
-    readFileAsDataURL(file) {
+    // فشرده‌سازی کلاینت‌ساید برای بهینگی Dexie و لود سریع
+    compressImageFile(file, maxWidth = 900, quality = 0.8) {
       return new Promise((resolve) => {
         const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result);
+        reader.onload = (readerEvent) => {
+          const image = new Image();
+          image.onload = () => {
+            let width = image.width;
+            let height = image.height;
+
+            if (width > maxWidth) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(image, 0, 0, width, height);
+
+            const dataUrl = canvas.toDataURL('image/jpeg', quality);
+            resolve(dataUrl);
+          };
+          image.src = readerEvent.target.result;
+        };
         reader.readAsDataURL(file);
       });
     },
@@ -992,17 +1014,17 @@
       AppState.currentFormImages = [...imgs];
       this.renderAlbumPreview();
 
-      document.getElementById('propModalTitle').textContent = `✏️ ویرایش ملک: ${property.title}`;
-      document.getElementById('btnSubmitPropModal').textContent = 'ذخیره تغییرات ملک 💾';
+      document.getElementById('propModalTitle').textContent = `ویرایش ملک: ${property.title}`;
+      document.getElementById('btnSubmitPropModal').textContent = 'ذخیره تغییرات ملک';
 
       addModal.style.display = 'flex';
     },
 
     async confirmDelete(property) {
-      if (confirm(`آیا از حذف کامل ملک "${property.title}" از دیتابیس سامانه اطمینان دارید؟`)) {
+      if (confirm(`آیا از حذف کامل ملک "${property.title}" از سامانه اطمینان دارید؟`)) {
         if (window.PropertyService && property.id) {
           await window.PropertyService.delete(property.id);
-          ToastManager.show(`ملک ${property.title} با موفقیت حذف شد 🗑️`, 'warning');
+          ToastManager.show(`ملک ${property.title} با موفقیت حذف شد.`, 'warning');
           loadPropertiesData();
         }
       }
@@ -1034,7 +1056,7 @@
         const text = document.getElementById('shareGeneratedText')?.value;
         if (text) {
           navigator.clipboard.writeText(text);
-          ToastManager.show('متن پرزنت کپی شد 📋', 'success');
+          ToastManager.show('متن پرزنت کپی شد.', 'success');
         }
       });
 
@@ -1057,7 +1079,7 @@
       const mainImg = (property.images && property.images[0]) || property.image || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80';
       document.getElementById('sharePreviewImg').src = mainImg;
       document.getElementById('sharePreviewTitle').textContent = property.title || 'ملک لوکس';
-      document.getElementById('sharePreviewSpecs').textContent = `📐 ${property.area || '۳۲۰'} متر • 🛏 ${property.rooms || '۳'} خواب`;
+      document.getElementById('sharePreviewSpecs').textContent = `${property.area || '۳۲۰'} متر • ${property.rooms || '۳'} خواب`;
       document.getElementById('sharePreviewPrice').textContent = property.price || 'توافقی';
 
       const checkConfidential = document.getElementById('shareIncludeConfidential');
@@ -1074,19 +1096,19 @@
       const isConfidential = document.getElementById('shareIncludeConfidential')?.checked;
       const textarea = document.getElementById('shareGeneratedText');
 
-      let output = `🏢 فایل اختصاصی املاک کوروش\n`;
-      output += `📍 عنوان: ${p.title || 'آپارتمان لوکس'}\n`;
-      output += `📐 متراژ: ${p.area || '۳۲۰'} متر | 🛏 تعداد خواب: ${p.rooms || '۳'}\n`;
-      output += `💎 ارزش اعلامی: ${p.price || 'توافقی'}\n`;
-      output += `🏷 شناسه فایل: ${p.code || 'KR-00'}\n`;
+      let output = `فایل اختصاصی املاک کوروش\n`;
+      output += `عنوان: ${p.title || 'آپارتمان لوکس'}\n`;
+      output += `متراژ: ${p.area || '۳۲۰'} متر | تعداد خواب: ${p.rooms || '۳'}\n`;
+      output += `ارزش اعلامی: ${p.price || 'توافقی'}\n`;
+      output += `شناسه فایل: ${p.code || 'KR-00'}\n`;
 
       if (isConfidential) {
-        output += `\n🔒 [اطلاعات محرمانه]:\n`;
-        output += `👤 مالک: ${p.ownerName || 'ثبت در سامانه'}\n`;
-        output += `📞 تلفن مالک: ${p.ownerPhone || '---'}\n`;
-        output += `📌 آدرس دقیق: ${p.address || p.location || 'تهران'}\n`;
+        output += `\n[اطلاعات محرمانه جهت پیگیری]:\n`;
+        output += `مالک: ${p.ownerName || 'ثبت در سامانه'}\n`;
+        output += `تلفن مالک: ${p.ownerPhone || '---'}\n`;
+        output += `آدرس دقیق: ${p.address || p.location || 'تهران'}\n`;
       } else {
-        output += `\n✨ دارای سند رسمی تک‌برگ و آماده انتقال.\nجهت دریافت لوکیشن و هماهنگی بازدید پیام دهید.`;
+        output += `\nدارای سند رسمی تک‌برگ و آماده انتقال.\nجهت دریافت لوکیشن و هماهنگی بازدید پیام دهید.`;
       }
 
       if (textarea) textarea.value = output;
@@ -1099,7 +1121,7 @@
       if (!properties || properties.length === 0) {
         container.innerHTML = `
           <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; background: var(--paper-card); border: 1.5px dashed var(--border-dark); border-radius: var(--radius-sm);">
-            <span style="font-size: 2rem;">📭</span>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--ink-secondary);"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
             <p style="margin-top: 8px; font-weight: 700; color: var(--ink-secondary); font-size: 0.85rem;">هیچ ملکی ثبت نشده است.</p>
           </div>
         `;
@@ -1109,7 +1131,6 @@
       container.innerHTML = properties.map((item, idx) => {
         const blurStyle = AppState.isPrivacyActive ? 'filter: blur(5px); opacity: 0.3;' : 'filter: none; opacity: 1;';
         
-        // آرایه تصاویر ملک
         const imagesList = (item.images && item.images.length > 0) 
           ? item.images 
           : (item.image ? [item.image] : ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80']);
@@ -1139,10 +1160,14 @@
                 </div>
               ` : ''}
 
-              <!-- دکمه‌های سریع ویرایش و حذف روی کادر تصویر -->
+              <!-- دکمه‌های سریع ویرایش و حذف -->
               <div style="position: absolute; top: 8px; left: 8px; display: flex; gap: 4px; z-index: 2;">
-                <button class="btn-card-edit" data-idx="${idx}" title="ویرایش ملک" style="background: rgba(0,0,0,0.75); color: #facc15; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; width: 24px; height: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.72rem;">✏️</button>
-                <button class="btn-card-delete" data-idx="${idx}" title="حذف ملک" style="background: rgba(0,0,0,0.75); color: #f87171; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; width: 24px; height: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.72rem;">🗑️</button>
+                <button class="btn-card-edit" data-idx="${idx}" title="ویرایش ملک" style="background: rgba(0,0,0,0.75); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; width: 24px; height: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                </button>
+                <button class="btn-card-delete" data-idx="${idx}" title="حذف ملک" style="background: rgba(0,0,0,0.75); color: #f87171; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; width: 24px; height: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                </button>
               </div>
             </div>
 
@@ -1163,24 +1188,24 @@
                 ${item.price || 'توافقی'}
               </div>
 
-              <!-- کادر فشرده اطلاعات محرمانه -->
+              <!-- کادر اطلاعات محرمانه -->
               <div style="background: rgba(0, 0, 0, 0.025); padding: 5px 8px; border-radius: 4px; border: 1px dashed var(--paper-border); font-size: 0.7rem; margin-top: 2px;">
                 <div class="card-private-data" style="${blurStyle} transition: filter 0.2s, opacity 0.2s; color: var(--ink-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                   <strong>مالک:</strong> ${item.ownerName || 'ثبت نشده'} (${item.ownerPhone || '---'})
                 </div>
                 <div class="card-private-data" style="${blurStyle} margin-top: 2px; transition: filter 0.2s, opacity 0.2s; color: var(--ink-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                  📍 ${item.address || item.location || 'تهران'}
+                  ${item.address || item.location || 'تهران'}
                 </div>
               </div>
 
               <!-- دکمه‌های پرزنت و اشتراک -->
               <div style="display: flex; gap: 6px; margin-top: auto; padding-top: 6px;">
-                <button class="story-btn btn-trigger-share" data-index="${idx}" style="flex: 1; padding: 6px; font-size: 0.76rem; font-weight: 800; border-radius: 5px; background: var(--accent-sub); color: #000; border: 1px solid var(--border-dark); display: flex; align-items: center; justify-content: center; gap: 4px; cursor: pointer;">
-                  <span>📤</span>
+                <button class="story-btn btn-trigger-share" data-index="${idx}" style="flex: 1; padding: 6px; font-size: 0.76rem; font-weight: 800; border-radius: 5px; background: var(--accent-sub); color: #000; border: 1px solid var(--border-dark); display: flex; align-items: center; justify-content: center; gap: 5px; cursor: pointer;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                   <span>ارسال / پرزنت</span>
                 </button>
-                <button class="story-btn" onclick="window.showToast('✨ متن تبلیغاتی هوش مصنوعی تولید شد.', 'info')" style="padding: 6px 10px; font-size: 0.76rem; font-weight: 800; border-radius: 5px; display: flex; align-items: center; justify-content: center; gap: 4px;">
-                  <span>✨</span>
+                <button class="story-btn" onclick="window.showToast('متن آگهی تولید شد.', 'info')" style="padding: 6px 10px; font-size: 0.76rem; font-weight: 800; border-radius: 5px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
                   <span>آگهی</span>
                 </button>
               </div>
@@ -1191,7 +1216,7 @@
         `;
       }).join('');
 
-      // کنترل دکمه‌های اسلایدر تصاویر کارت‌ها
+      // دکمه‌های اسلایدر تصاویر کارت‌ها
       container.querySelectorAll('.btn-next-card-img').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
