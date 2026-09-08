@@ -223,7 +223,7 @@
 
       </header>
 
-      <!-- پنل ۱: داشبورد جامع (بازگشت نمودار ستونی رترو) -->
+      <!-- پنل ۱: داشبورد جامع -->
       <div class="view-panel active-panel" data-view="dashboard">
         
         <section class="stamped-kpi-row">
@@ -389,7 +389,7 @@
                 </tr>
               </thead>
               <tbody id="dealsTableBody">
-                <!-- دیتای Dexie توسط app.js چیده می‌شود -->
+                <!-- رندر از دیتابیس Dexie توسط app.js -->
               </tbody>
             </table>
           </div>
@@ -397,35 +397,15 @@
 
       </div>
 
-      <!-- پنل اختصاصی کارت‌های املاک و فایلینگ -->
+      <!-- پنل اختصاصی کارت‌های املاک و فایلینگ (حالت مینیمال و یکپارچه) -->
       <div class="view-panel" data-view="properties" hidden>
-        <div class="properties-deck-wrapper" style="padding: 1.5rem; max-width: 1300px; margin: 0 auto;">
+        <div class="properties-deck-wrapper" style="padding: 1.2rem; max-width: 1300px; margin: 0 auto;">
           
-          <!-- بنر تصویری پانوراما بالای برگه املاک -->
-          <div class="properties-hero-banner" style="position: relative; width: 100%; height: 200px; border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1.5rem; border: 1.5px solid var(--border-dark); box-shadow: 3px 3px 0px var(--shadow-color);">
-            <img 
-              src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80" 
-              alt="پنت‌هاوس لوکس کوروش" 
-              style="width: 100%; height: 100%; object-fit: cover; object-position: center 40%;"
-            >
-            <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.78) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.2rem;">
-              <span class="stamp-chip green" style="align-self: flex-start; margin-bottom: 4px; font-size: 0.68rem; font-weight: 800;">
-                ویترین اختصاصی فایلینگ املاک کوروش
-              </span>
-              <h2 style="color: #fff; margin: 0; font-size: 1.45rem; font-weight: 900; text-shadow: 0 2px 6px rgba(0,0,0,0.6);">
-                آرشیو لوکس و فایل‌های فعال منطقه
-              </h2>
-              <p style="color: rgba(255,255,255,0.85); font-size: 0.78rem; margin: 3px 0 0 0;">
-                مدیریت ارزش‌گذاری، اسناد رسمی تک‌برگ و صدور فوری آگهی
-              </p>
-            </div>
-          </div>
-
           <!-- نوار کنترل بالای کارت‌ها -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 10px;">
             <div>
-              <h2 style="font-size: 1.3rem; font-weight: 900; color: var(--ink-primary); margin: 0;">کارت‌های فایلینگ و املاک فعال</h2>
-              <p style="font-size: 0.78rem; color: var(--ink-secondary); margin-top: 3px;">مدیریت هوشمند، ارزش‌گذاری و استعلام سریع فایل‌ها</p>
+              <h2 style="font-size: 1.25rem; font-weight: 900; color: var(--ink-primary); margin: 0;">فایلینگ املاک فعال</h2>
+              <p style="font-size: 0.76rem; color: var(--ink-secondary); margin-top: 2px;">ارزش‌گذاری رسمی، پرزنت هوشمند و صدور توافق‌نامه</p>
             </div>
 
             <div style="display: flex; gap: 8px;">
@@ -442,66 +422,76 @@
           </div>
 
           <!-- کانتینر شبکه کارت‌ها -->
-          <div id="propertiesCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1.5rem;">
-            <!-- کارت‌ها از طریق app.js چیده می‌شوند -->
+          <div id="propertiesCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem;">
+            <!-- کارت‌ها توسط app.js رندر می‌شوند -->
           </div>
 
         </div>
       </div>
 
-      <!-- مودال ثبت ملک جدید -->
+      <!-- مودال ثبت ملک جدید (همراه با قابلیت آپلود و انتخاب عکس دلخواه) -->
       <div class="call-dialog-overlay" id="addPropertyModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 99999;">
-        <div style="background: var(--paper-card); border: 2px solid var(--border-dark); border-radius: var(--radius-md); width: 90%; max-width: 520px; padding: 1.4rem; color: var(--ink-primary); box-shadow: 6px 6px 0px var(--border-dark);">
+        <div style="background: var(--paper-card); border: 2px solid var(--border-dark); border-radius: var(--radius-md); width: 90%; max-width: 500px; padding: 1.4rem; color: var(--ink-primary); box-shadow: 6px 6px 0px var(--border-dark); max-height: 90vh; overflow-y: auto;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1.5px dashed var(--paper-border); padding-bottom: 0.6rem;">
-            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 900; color: var(--accent-main);">🏢 ثبت فایل ملکی در سامانه</h3>
+            <h3 style="margin: 0; font-size: 1.05rem; font-weight: 900; color: var(--accent-main);">🏢 ثبت مشخصات فایل ملک</h3>
             <button id="btnCloseAddPropertyModal" style="background: none; border: none; font-size: 1.2rem; color: var(--ink-secondary); cursor: pointer;">✕</button>
           </div>
 
           <form id="formNewProperty" style="display: flex; flex-direction: column; gap: 10px;">
-            <div style="display: flex; gap: 10px;">
+            
+            <!-- کادر آپلود تصویر اختصاصی ملک -->
+            <div style="border: 1.5px dashed var(--paper-border); border-radius: 8px; padding: 8px; text-align: center; background: rgba(0,0,0,0.02); display: flex; flex-direction: column; align-items: center; gap: 6px;">
+              <img id="propImagePreview" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" alt="پیش‌نمایش" style="width: 100%; height: 110px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border-dark);">
+              <label for="propImageFile" class="story-btn" style="cursor: pointer; padding: 4px 10px; font-size: 0.72rem; font-weight: 800; display: inline-block;">
+                📸 انتخاب و آپلود عکس ملک
+              </label>
+              <input type="file" id="propImageFile" accept="image/*" style="display: none;">
+            </div>
+
+            <div style="display: flex; gap: 8px;">
               <div style="flex: 2;">
-                <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 4px; color: var(--ink-secondary);">عنوان فایل</label>
-                <input type="text" id="propTitle" required placeholder="مثلاً: پنت‌هاوس دوبلکس فرشته" style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.82rem;">
+                <label style="font-size: 0.74rem; font-weight: 700; display: block; margin-bottom: 3px; color: var(--ink-secondary);">عنوان فایل</label>
+                <input type="text" id="propTitle" required placeholder="مثلاً: پنت‌هاوس دوبلکس فرشته" style="width: 100%; padding: 7px 9px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.8rem;">
               </div>
               <div style="flex: 1;">
-                <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 4px; color: var(--ink-secondary);">کد ملک</label>
-                <input type="text" id="propCode" required placeholder="#KR-055" style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.82rem;">
+                <label style="font-size: 0.74rem; font-weight: 700; display: block; margin-bottom: 3px; color: var(--ink-secondary);">کد ملک</label>
+                <input type="text" id="propCode" required placeholder="#KR-055" style="width: 100%; padding: 7px 9px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.8rem;">
               </div>
             </div>
 
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 8px;">
               <div style="flex: 1;">
-                <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 4px; color: var(--ink-secondary);">متراژ (متر)</label>
-                <input type="number" id="propArea" required placeholder="۲۵۰" style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.82rem;">
+                <label style="font-size: 0.74rem; font-weight: 700; display: block; margin-bottom: 3px; color: var(--ink-secondary);">متراژ (متر)</label>
+                <input type="number" id="propArea" required placeholder="۲۵۰" style="width: 100%; padding: 7px 9px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.8rem;">
               </div>
               <div style="flex: 1;">
-                <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 4px; color: var(--ink-secondary);">تعداد خواب</label>
-                <input type="number" id="propRooms" required placeholder="۳" style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.82rem;">
+                <label style="font-size: 0.74rem; font-weight: 700; display: block; margin-bottom: 3px; color: var(--ink-secondary);">تعداد خواب</label>
+                <input type="number" id="propRooms" required placeholder="۳" style="width: 100%; padding: 7px 9px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.8rem;">
               </div>
             </div>
 
             <div>
-              <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 4px; color: var(--ink-secondary);">قیمت اعلامی (تومان)</label>
-              <input type="text" id="propPrice" required placeholder="مثلاً: ۶۸,۰۰۰,۰۰۰,۰۰۰ تومان" style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.82rem;">
+              <label style="font-size: 0.74rem; font-weight: 700; display: block; margin-bottom: 3px; color: var(--ink-secondary);">قیمت اعلامی (تومان)</label>
+              <input type="text" id="propPrice" required placeholder="مثلاً: ۶۸,۰۰۰,۰۰۰,۰۰۰ تومان" style="width: 100%; padding: 7px 9px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.8rem;">
             </div>
 
-            <div style="background: rgba(0,0,0,0.03); border: 1px dashed var(--paper-border); padding: 10px; border-radius: 8px; margin-top: 4px;">
-              <label style="font-size: 0.72rem; font-weight: 800; display: block; margin-bottom: 4px; color: var(--accent-sub);">🔒 اطلاعات محرمانه (پوشش حالت پرزنت امن)</label>
-              <div style="display: flex; gap: 8px;">
-                <input type="text" id="propOwner" placeholder="نام مالک" style="flex: 1; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.8rem;">
-                <input type="text" id="propPhone" placeholder="شماره تماس مالک" style="flex: 1; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.8rem;">
+            <div style="background: rgba(0,0,0,0.03); border: 1px dashed var(--paper-border); padding: 8px 10px; border-radius: 6px;">
+              <label style="font-size: 0.7rem; font-weight: 800; display: block; margin-bottom: 4px; color: var(--accent-sub);">🔒 اطلاعات محرمانه (مالک و آدرس)</label>
+              <div style="display: flex; gap: 6px;">
+                <input type="text" id="propOwner" placeholder="نام مالک" style="flex: 1; padding: 6px 8px; border-radius: 5px; border: 1px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.78rem;">
+                <input type="text" id="propPhone" placeholder="شماره تماس مالک" style="flex: 1; padding: 6px 8px; border-radius: 5px; border: 1px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.78rem;">
               </div>
-              <input type="text" id="propAddress" placeholder="آدرس دقیق و پلاک محرمانه" style="width: 100%; margin-top: 6px; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.8rem;">
+              <input type="text" id="propAddress" placeholder="آدرس و پلاک محرمانه" style="width: 100%; margin-top: 5px; padding: 6px 8px; border-radius: 5px; border: 1px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.78rem;">
             </div>
 
-            <button type="submit" style="margin-top: 8px; padding: 10px; border-radius: 8px; background: #3f6e37; color: white; border: 1.5px solid var(--border-dark); font-weight: 800; font-size: 0.85rem; cursor: pointer; box-shadow: 2px 2px 0px var(--border-dark);">
-              ذخیره آنی در سامانه ✨
+            <button type="submit" style="margin-top: 6px; padding: 9px; border-radius: 8px; background: #3f6e37; color: white; border: 1.5px solid var(--border-dark); font-weight: 800; font-size: 0.84rem; cursor: pointer; box-shadow: 2px 2px 0px var(--border-dark);">
+              ذخیره و درج در آلبوم املاک ✨
             </button>
           </form>
         </div>
       </div>
 
-      <!-- 📤 مودال پیشرفته اشتراک‌گذاری و ارسال مشخصات ملک -->
+      <!-- 📤 مودال اشتراک‌گذاری و ارسال مشخصات ملک -->
       <div class="call-dialog-overlay" id="sharePropertyModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 99999;">
         <div style="background: var(--paper-card); border: 2px solid var(--border-dark); border-radius: var(--radius-md); width: 90%; max-width: 480px; padding: 1.4rem; color: var(--ink-primary); box-shadow: 6px 6px 0px var(--border-dark); display: flex; flex-direction: column; gap: 12px;">
           
@@ -513,7 +503,7 @@
             <button id="btnCloseShareModal" style="background: none; border: none; font-size: 1.2rem; color: var(--ink-secondary); cursor: pointer;">✕</button>
           </div>
 
-          <!-- پیش‌نمایش کارت انتخابی (عکس، عنوان و متراژ) -->
+          <!-- پیش‌نمایش کارت انتخابی -->
           <div style="display: flex; gap: 10px; background: rgba(0,0,0,0.03); border: 1.5px solid var(--border-dark); border-radius: var(--radius-sm); padding: 8px; align-items: center;">
             <img id="sharePreviewImg" src="" alt="پیش‌نمایش ملک" style="width: 75px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border-dark);">
             <div style="flex: 1; min-width: 0;">
@@ -538,7 +528,7 @@
             </label>
           </div>
 
-          <!-- پیش‌نمایش متن خروجی -->
+          <!-- پیش‌نمایش پیام -->
           <div>
             <label style="font-size: 0.72rem; font-weight: 700; color: var(--ink-secondary); display: block; margin-bottom: 4px;">پیش‌نمایش پیام آماده ارسال:</label>
             <textarea id="shareGeneratedText" rows="5" readonly style="width: 100%; border-radius: 8px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); padding: 8px; font-size: 0.76rem; line-height: 1.5; resize: none;"></textarea>

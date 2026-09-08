@@ -90,6 +90,7 @@
     timerTotalSeconds: 0,
     isPrivacyActive: false,
     currentSelectedProperty: null,
+    uploadedImageBase64: '',
     mockEntities: [
       { id: 'PROP-1049', type: 'ملک', title: 'پنت‌هاوس ۴۵۰ متری الهیه فرشته', targetView: 'properties' },
       { id: 'PROP-1050', type: 'ملک', title: 'ویلای مدرن ۶۵۰ متری شهرک غرب', targetView: 'properties' },
@@ -806,7 +807,7 @@
   };
 
   // =====================================================
-  // 11. Property Cards Deck & Share Engine
+  // 11. Minimal Property Cards Deck & Share Engine
   // =====================================================
   const PropertyCardsEngine = {
     init() {
@@ -821,7 +822,7 @@
           
           if (labelPrivacy) {
             labelPrivacy.textContent = AppState.isPrivacyActive 
-              ? 'حالت امن فعال (اطلاعات محو 🛡️)' 
+              ? 'حالت امن فعال (محو 🛡️)' 
               : 'حالت امن پرزنت (عادی)';
           }
 
@@ -834,6 +835,25 @@
             AppState.isPrivacyActive ? '🛡️ حالت پرزنت امن فعال شد.' : 'حالت عادی بازگردانی شد.',
             'info'
           );
+        });
+      }
+
+      // آپلود فایل عکس دلخواه در مودال
+      const fileInput = document.getElementById('propImageFile');
+      const imgPreview = document.getElementById('propImagePreview');
+
+      if (fileInput && !fileInput.dataset.bound) {
+        fileInput.dataset.bound = "true";
+        fileInput.addEventListener('change', (e) => {
+          const file = e.target.files?.[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              AppState.uploadedImageBase64 = event.target.result;
+              if (imgPreview) imgPreview.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
         });
       }
 
@@ -869,6 +889,8 @@
         formNewProp.addEventListener('submit', async (e) => {
           e.preventDefault();
 
+          const finalImg = AppState.uploadedImageBase64 || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80';
+
           const newPropData = {
             title: document.getElementById('propTitle')?.value.trim() || 'فایل ملکی جدید',
             code: document.getElementById('propCode')?.value.trim() || `#KR-${Math.floor(100 + Math.random() * 900)}`,
@@ -881,7 +903,7 @@
             address: document.getElementById('propAddress')?.value.trim() || 'تهران',
             buyer: 'ثبت جدید در سامانه',
             status: 'آماده معامله',
-            image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'
+            image: finalImg
           };
 
           if (window.PropertyService) {
@@ -889,14 +911,15 @@
           }
 
           formNewProp.reset();
+          AppState.uploadedImageBase64 = '';
+          if (imgPreview) imgPreview.src = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80';
           if (addModal) addModal.style.display = 'none';
-          ToastManager.show('فایل جدید با موفقیت در دیتابیس ثبت شد ✨', 'success');
+          ToastManager.show('فایل جدید با عکس اختصاصی در دیتابیس ثبت شد ✨', 'success');
 
           loadPropertiesData();
         });
       }
 
-      // راه‌اندازی مودال اشتراک‌گذاری
       this.initShareModal();
     },
 
@@ -926,7 +949,7 @@
         const text = document.getElementById('shareGeneratedText')?.value;
         if (text) {
           navigator.clipboard.writeText(text);
-          ToastManager.show('متن پرزنت کپی شد 📋 آماده ارسال به مشتری', 'success');
+          ToastManager.show('متن پرزنت کپی شد 📋', 'success');
         }
       });
 
@@ -969,15 +992,15 @@
       output += `📍 عنوان: ${p.title || 'آپارتمان لوکس'}\n`;
       output += `📐 متراژ: ${p.area || '۳۲۰'} متر | 🛏 تعداد خواب: ${p.rooms || '۳'}\n`;
       output += `💎 ارزش اعلامی: ${p.price || 'توافقی'}\n`;
-      output += `🏷 شناسه رهگیری: ${p.code || 'KR-00'}\n`;
+      output += `🏷 شناسه فایل: ${p.code || 'KR-00'}\n`;
 
       if (isConfidential) {
-        output += `\n🔒 [اطلاعات محرمانه جهت پیگیری]:\n`;
+        output += `\n🔒 [اطلاعات محرمانه]:\n`;
         output += `👤 مالک: ${p.ownerName || 'ثبت در سامانه'}\n`;
-        output += `📞 تماس مالک: ${p.ownerPhone || '---'}\n`;
+        output += `📞 تلفن مالک: ${p.ownerPhone || '---'}\n`;
         output += `📌 آدرس دقیق: ${p.address || p.location || 'تهران'}\n`;
       } else {
-        output += `\n✨ دارای سند رسمی تک‌برگ و بدون معارض.\nجهت هماهنگی بازدید و دریافت فیلم واحد با دفتر املاک تماس حاصل فرمایید.`;
+        output += `\n✨ دارای سند رسمی تک‌برگ و آماده انتقال.\nجهت دریافت لوکیشن و هماهنگی بازدید پیام دهید.`;
       }
 
       if (textarea) textarea.value = output;
@@ -989,80 +1012,67 @@
 
       if (!properties || properties.length === 0) {
         container.innerHTML = `
-          <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: var(--paper-card); border: 1.5px dashed var(--border-dark); border-radius: var(--radius-sm);">
-            <span style="font-size: 2.2rem;">📭</span>
-            <p style="margin-top: 10px; font-weight: 700; color: var(--ink-secondary);">هیچ ملکی در دیتابیس ثبت نشده است.</p>
+          <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; background: var(--paper-card); border: 1.5px dashed var(--border-dark); border-radius: var(--radius-sm);">
+            <span style="font-size: 2rem;">📭</span>
+            <p style="margin-top: 8px; font-weight: 700; color: var(--ink-secondary); font-size: 0.85rem;">هیچ ملکی ثبت نشده است.</p>
           </div>
         `;
         return;
       }
 
       container.innerHTML = properties.map((item, idx) => {
-        const isUrgent = item.tag === 'urgent' || item.status === 'فوری';
-        const badgeText = item.tagText || (isUrgent ? 'فوری 🔥' : 'اکازیون ✨');
-        const badgeClass = isUrgent ? 'brick' : 'olive';
-
-        const blurStyle = AppState.isPrivacyActive ? 'filter: blur(6px); opacity: 0.35;' : 'filter: none; opacity: 1;';
+        const blurStyle = AppState.isPrivacyActive ? 'filter: blur(5px); opacity: 0.3;' : 'filter: none; opacity: 1;';
 
         return `
-          <div class="stamp-kpi-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 0; overflow: hidden; background: var(--paper-card); border: 1.5px solid var(--border-dark); border-radius: var(--radius-md); box-shadow: 3px 3px 0px var(--shadow-color); transition: transform 0.2s ease;">
+          <div class="stamp-kpi-card" style="display: flex; flex-direction: column; padding: 0; overflow: hidden; background: var(--paper-card); border: 1.5px solid var(--border-dark); border-radius: var(--radius-sm); box-shadow: 2px 2px 0px var(--shadow-color); transition: transform 0.15s ease;">
             
-            <!-- تصویر و نشان‌ها -->
-            <div style="position: relative; width: 100%; height: 180px; background: #1a1a1a; overflow: hidden;">
+            <!-- تصویر تمیز و نشان کد -->
+            <div style="position: relative; width: 100%; height: 165px; background: #1a1a1a; overflow: hidden;">
               <img src="${item.image || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'}" 
                    alt="${item.title || 'ملک'}" 
-                   style="width: 100%; height: 100%; object-fit: cover; opacity: 0.95;">
+                   style="width: 100%; height: 100%; object-fit: cover;">
               
-              <span class="stamp-chip ${badgeClass}" style="position: absolute; top: 10px; right: 10px; font-size: 0.72rem; font-weight: 800;">
-                ${badgeText}
-              </span>
-
-              <span style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.68rem; font-family: monospace;">
+              <span style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.75); color: #fff; padding: 2px 7px; border-radius: 4px; font-size: 0.68rem; font-family: monospace; font-weight: 800;">
                 ${item.code || item.id || 'PROP-#'}
               </span>
             </div>
 
-            <!-- مشخصات و محتوا -->
-            <div style="padding: 1.1rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 10px;">
-              <div>
-                <h4 style="margin: 0 0 6px 0; font-size: 1.05rem; font-weight: 900; color: var(--ink-primary); line-height: 1.4;">
+            <!-- مشخصات مینیمال و خوانا -->
+            <div style="padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; flex: 1;">
+              
+              <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 6px;">
+                <h4 style="margin: 0; font-size: 0.95rem; font-weight: 900; color: var(--ink-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                   ${item.title || 'آپارتمان مسکونی'}
                 </h4>
+                <span style="font-size: 0.72rem; color: var(--ink-secondary); font-weight: 700; white-space: nowrap;">
+                  ${item.area || '---'} متر
+                </span>
+              </div>
 
-                <!-- مشخصات متراژ و خواب -->
-                <div style="display: flex; gap: 8px; font-size: 0.76rem; font-weight: 700; color: var(--ink-secondary); margin-bottom: 8px;">
-                  <span>📐 ${item.area || '۳۲۰'} متر</span>
-                  <span>•</span>
-                  <span>🛏 ${item.rooms || item.beds || '۳'} خواب</span>
+              <!-- قیمت اعلامی -->
+              <div style="font-size: 0.95rem; color: #10b981; font-weight: 900;">
+                ${item.price || 'توافقی'}
+              </div>
+
+              <!-- کادر فشرده و مینیمال اطلاعات محرمانه -->
+              <div style="background: rgba(0, 0, 0, 0.025); padding: 5px 8px; border-radius: 4px; border: 1px dashed var(--paper-border); font-size: 0.7rem; margin-top: 2px;">
+                <div class="card-private-data" style="${blurStyle} transition: filter 0.2s, opacity 0.2s; color: var(--ink-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  <strong>مالک:</strong> ${item.ownerName || 'ثبت نشده'} (${item.ownerPhone || '---'})
                 </div>
-
-                <!-- ارزش اعلامی -->
-                <div style="margin-bottom: 8px;">
-                  <strong style="font-size: 1.1rem; color: #10b981; font-weight: 900;">
-                    ${item.price || 'توافقی'}
-                  </strong>
-                </div>
-
-                <!-- باکس اطلاعات محرمانه -->
-                <div style="background: rgba(0, 0, 0, 0.04); padding: 8px 10px; border-radius: var(--radius-sm); border: 1px dashed var(--paper-border); font-size: 0.74rem;">
-                  <div class="card-private-data" style="${blurStyle} transition: filter 0.25s, opacity 0.25s; color: var(--ink-primary);">
-                    <strong>مالک:</strong> ${item.ownerName || 'خانم تهرانی'} (${item.ownerPhone || '09124445566'})
-                  </div>
-                  <div class="card-private-data" style="${blurStyle} margin-top: 4px; transition: filter 0.25s, opacity 0.25s; color: var(--ink-secondary);">
-                    <strong>آدرس:</strong> ${item.address || item.location || 'نیاوران، خیابان مژده'}
-                  </div>
+                <div class="card-private-data" style="${blurStyle} margin-top: 2px; transition: filter 0.2s, opacity 0.2s; color: var(--ink-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  📍 ${item.address || item.location || 'تهران'}
                 </div>
               </div>
 
-              <!-- دکمه‌های اکشن: ارسال هوشمند و آگهی هوش مصنوعی -->
-              <div style="display: flex; gap: 8px; margin-top: auto; padding-top: 8px;">
-                <button class="story-btn btn-trigger-share" data-index="${idx}" style="flex: 1.3; padding: 7px; font-size: 0.8rem; font-weight: 800; border-radius: 6px; background: var(--accent-sub); color: #000; border: 1.5px solid var(--border-dark); display: flex; align-items: center; justify-content: center; gap: 4px; cursor: pointer; box-shadow: 2px 2px 0 var(--border-dark);">
+              <!-- دکمه‌های پرزنت و اشتراک -->
+              <div style="display: flex; gap: 6px; margin-top: auto; padding-top: 6px;">
+                <button class="story-btn btn-trigger-share" data-index="${idx}" style="flex: 1; padding: 6px; font-size: 0.76rem; font-weight: 800; border-radius: 5px; background: var(--accent-sub); color: #000; border: 1px solid var(--border-dark); display: flex; align-items: center; justify-content: center; gap: 4px; cursor: pointer;">
                   <span>📤</span>
                   <span>ارسال / پرزنت</span>
                 </button>
-                <button class="story-btn" onclick="window.showToast('✨ متن تبلیغاتی هوش مصنوعی تولید شد.', 'info')" style="flex: 1; padding: 7px; font-size: 0.8rem; font-weight: 800; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                <button class="story-btn" onclick="window.showToast('✨ متن تبلیغاتی هوش مصنوعی تولید شد.', 'info')" style="padding: 6px 10px; font-size: 0.76rem; font-weight: 800; border-radius: 5px; display: flex; align-items: center; justify-content: center; gap: 4px;">
                   <span>✨</span>
-                  <span>متن آگهی</span>
+                  <span>آگهی</span>
                 </button>
               </div>
 
@@ -1072,7 +1082,6 @@
         `;
       }).join('');
 
-      // اتصال رویداد باز شدن مودال ارسال به دکمه‌های هر کارت
       container.querySelectorAll('.btn-trigger-share').forEach(btn => {
         btn.addEventListener('click', () => {
           const index = parseInt(btn.dataset.index, 10);
