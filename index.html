@@ -13,8 +13,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/style.css?v=3.0">
+  <link rel="stylesheet" href="css/animations.css?v=3.0">
 </head>
 <body class="time-reactive-body">
 
@@ -73,13 +73,13 @@
         </button>
         <button class="nav-tab" data-view="settings">
           <span class="icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           </span>
           <span>تنظیمات و تغییر تم</span>
         </button>
       </nav>
 
-      <!-- ویجت سه‌تایی ماژولار هماهنگ با تم -->
+      <!-- ویجت سه‌تایی ماژولار زمان -->
       <div class="modular-clock-card">
         <div class="modular-top-row">
           <div class="analog-dial-box">
@@ -138,16 +138,16 @@
           <span class="date-scroll" id="smartDateDisplay">در حال دریافت تاریخ...</span>
         </div>
 
-        <!-- ستون مرکز برای داینامیک آیلند (قفل به طور کامل حذف شد) -->
+        <!-- ستون مرکز برای داینامیک آیلند (فشرده و بدون قفل) -->
         <div class="topbar-center-slot">
           <div class="apple-true-island" id="smartIsland" data-state="idle">
             
             <svg class="island-timer-svg" width="100%" height="100%">
-              <rect class="timer-progress-track" x="1.5" y="1.5" rx="17.5" ry="17.5"></rect>
+              <rect class="timer-progress-track" x="1.5" y="1.5" rx="15" ry="15"></rect>
             </svg>
 
-            <!-- ۱. حالت بیکار: ساعت ورق‌زن مینیمال LTR بدون هیچ قفل یا استیکر -->
-            <div class="island-idle-view" dir="ltr" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
+            <!-- ۱. حالت بیکار: فقط ساعت ورق‌زن مینیمال و نشانگر بدون قفل -->
+            <div class="island-idle-view" dir="ltr">
               <div class="flip-clock-mini">
                 <div class="flip-card">
                   <span class="flip-num" id="flipHours">11</span>
@@ -455,7 +455,7 @@
             <input type="hidden" id="propEditId" value="">
 
             <!-- کادر آپلود چند عکس و آلبوم پیش‌نمایش -->
-            <div style="border: 1.5px dashed var(--paper-border); border-radius: 8px; padding: 8px; text-align: center; background: rgba(0,0,0,0.02); display: flex; flex-direction: column; align-items: center; gap: 6px;">
+            <div style="border: 1.5px dashed var(--paper-border); border-radius: 8px; padding: 8px; text-align: center; background: rgba(255,255,255,0.02); display: flex; flex-direction: column; align-items: center; gap: 6px;">
               <div id="propImagesAlbumPreview" style="display: flex; gap: 6px; overflow-x: auto; width: 100%; min-height: 80px; align-items: center; padding-bottom: 4px;">
                 <!-- پیش‌نمایش تصاویر -->
               </div>
@@ -493,7 +493,7 @@
               <input type="text" id="propPrice" required placeholder="مثلاً: ۶۸,۰۰۰,۰۰۰,۰۰۰ تومان" style="width: 100%; padding: 7px 9px; border-radius: 6px; border: 1.5px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.8rem;">
             </div>
 
-            <div style="background: rgba(0,0,0,0.03); border: 1px dashed var(--paper-border); padding: 8px 10px; border-radius: 6px;">
+            <div style="background: rgba(255,255,255,0.03); border: 1px dashed var(--paper-border); padding: 8px 10px; border-radius: 6px;">
               <label style="font-size: 0.7rem; font-weight: 800; display: block; margin-bottom: 4px; color: var(--accent-sub);">اطلاعات محرمانه (مالک و آدرس)</label>
               <div style="display: flex; gap: 6px;">
                 <input type="text" id="propOwner" placeholder="نام مالک" style="flex: 1; padding: 6px 8px; border-radius: 5px; border: 1px solid var(--border-dark); background: var(--paper-card); color: var(--ink-primary); font-size: 0.78rem;">
@@ -522,7 +522,7 @@
           </div>
 
           <!-- پیش‌نمایش کارت انتخابی -->
-          <div style="display: flex; gap: 10px; background: rgba(0,0,0,0.03); border: 1.5px solid var(--border-dark); border-radius: var(--radius-sm); padding: 8px; align-items: center;">
+          <div style="display: flex; gap: 10px; background: rgba(255,255,255,0.03); border: 1.5px solid var(--border-dark); border-radius: var(--radius-sm); padding: 8px; align-items: center;">
             <img id="sharePreviewImg" src="" alt="پیش‌نمایش ملک" style="width: 75px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border-dark);">
             <div style="flex: 1; min-width: 0;">
               <h4 id="sharePreviewTitle" style="margin: 0 0 4px 0; font-size: 0.88rem; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></h4>
@@ -542,7 +542,7 @@
             </div>
             <label style="position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer;">
               <input type="checkbox" id="shareIncludeConfidential" style="opacity: 0; width: 0; height: 0;">
-              <span id="switchSlider" style="position: absolute; inset: 0; background-color: #cbd5e1; border: 1.5px solid var(--border-dark); border-radius: 24px; transition: 0.3s;"></span>
+              <span id="switchSlider" style="position: absolute; inset: 0; background-color: #475569; border: 1.5px solid var(--border-dark); border-radius: 24px; transition: 0.3s;"></span>
             </label>
           </div>
 
@@ -669,14 +669,14 @@
               <small>آبی مدرن شرکتی</small>
             </button>
             <button class="theme-card-option" data-theme-set="sunset">
-              <span class="tc-badge" style="background: #e11d48;"></span>
-              <strong>غروب سرخ (Sunset)</strong>
-              <small>ترکیب تیره و جذاب</small>
+              <span class="tc-badge" style="background: #f97316;"></span>
+              <strong>غروب مخملی (Sunset)</strong>
+              <small>ترکیب تیره و شیک</small>
             </button>
             <button class="theme-card-option" data-theme-set="night">
-              <span class="tc-badge" style="background: #00f0ff;"></span>
-              <strong>شب سایبرپانک (Night)</strong>
-              <small>تم نئونی تیره</small>
+              <span class="tc-badge" style="background: #38bdf8;"></span>
+              <strong>شب گرافیتی (Night)</strong>
+              <small>مشکی و تیتانیوم مات</small>
             </button>
           </div>
         </div>
@@ -717,7 +717,7 @@
           </a>
           <a href="#settings" class="dock-tile" data-view="settings" title="تنظیمات تم">
             <span class="tile-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             </span>
             <span class="tile-label">تم رنگی</span>
           </a>
@@ -807,11 +807,11 @@
     </div>
   </div>
 
-  <!-- اسکریپت‌های پروژه -->
+  <!-- اسکریپت‌های پروژه با ورژن جدید جهت شکستن کش -->
   <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
-  <script src="js/db.js"></script>
-  <script src="js/components.js"></script>
-  <script src="js/dashboard.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/db.js?v=3.0"></script>
+  <script src="js/components.js?v=3.0"></script>
+  <script src="js/dashboard.js?v=3.0"></script>
+  <script src="js/app.js?v=3.0"></script>
 </body>
 </html>
