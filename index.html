@@ -10,8 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=5.0">
-  <link rel="stylesheet" href="css/animations.css?v=5.0">
+  <link rel="stylesheet" href="css/style.css?v=6.0">
+  <link rel="stylesheet" href="css/animations.css?v=6.0">
 </head>
 <body class="time-reactive-body">
 
@@ -50,33 +50,15 @@
           </span>
           <span>املاک و فایلینگ</span>
         </button>
-        <button class="nav-tab" data-view="campaigns">
-          <span class="icon">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
-          </span>
-          <span>کمپین‌های جذب</span>
-        </button>
-        <button class="nav-tab" data-view="customers">
-          <span class="icon">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </span>
-          <span>دفتر متقاضیان</span>
-        </button>
         <button class="nav-tab" data-view="contracts">
           <span class="icon">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
           </span>
           <span>دفتر اسناد و قرارداد</span>
         </button>
-        <button class="nav-tab" data-view="settings">
-          <span class="icon">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          </span>
-          <span>تنظیمات و تم</span>
-        </button>
       </nav>
 
-      <!-- تقویم ماهانه مدرن -->
+      <!-- 📅 تقویم ماهانه مدرن و نوری (سایدبار) -->
       <div class="calendar-spotlight-card">
         <div class="cal-header-row" dir="ltr">
           <button class="cal-nav-btn" id="btnPrevMonth">
@@ -167,7 +149,7 @@
         </div>
       </header>
 
-      <!-- پنل ۱: داشبورد جامع (چیدمان پایدار و فیکس) -->
+      <!-- پنل ۱: داشبورد جامع (چیدمان فوق‌العاده پایدار و بدون شکست) -->
       <div class="view-panel active-panel" data-view="dashboard">
         
         <section class="modern-widgets-grid">
@@ -206,7 +188,7 @@
           </div>
         </section>
 
-        <!-- بخش تحلیل و مراحل پیگیری -->
+        <!-- بخش نمودار اصلی و پرونده‌های شاخص -->
         <section class="analytics-split-layout">
           <div class="glow-panel-container">
             <div class="stat-header-flex" style="margin-bottom: 8px;">
@@ -219,23 +201,23 @@
               </div>
             </div>
 
-            <!-- کادر با ارتفاع محدود ۲۰۰px برای ممانعت از به هم ریختگی -->
+            <!-- کادر با ارتفاع قطعی ۱۸۰px تا تحت هیچ شرایطی کش نیاید -->
             <div class="chart-main-svg-box">
-              <svg viewBox="0 0 600 200" preserveAspectRatio="none" style="width: 100%; height: 100%;">
+              <svg viewBox="0 0 600 180" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block;">
                 <defs>
                   <linearGradient id="areaVioletGlow" x1="0%" y1="0%" x2="0%" y2="100%">
                     <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.35"/>
                     <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.0"/>
                   </linearGradient>
                 </defs>
-                <line x1="0" y1="40" x2="600" y2="40" stroke="rgba(255,255,255,0.04)"/>
-                <line x1="0" y1="90" x2="600" y2="90" stroke="rgba(255,255,255,0.04)"/>
-                <line x1="0" y1="140" x2="600" y2="140" stroke="rgba(255,255,255,0.04)"/>
-                <path d="M 0 160 Q 100 70, 200 120 T 400 50 T 600 25 L 600 190 L 0 190 Z" fill="url(#areaVioletGlow)"/>
-                <path d="M 0 160 Q 100 70, 200 120 T 400 50 T 600 25" fill="none" stroke="#8b5cf6" stroke-width="3"/>
-                <circle cx="200" cy="120" r="4" fill="#ffffff"/>
-                <circle cx="400" cy="50" r="4" fill="#ffffff"/>
-                <circle cx="600" cy="25" r="5" fill="#ffffff"/>
+                <line x1="0" y1="35" x2="600" y2="35" stroke="rgba(255,255,255,0.04)"/>
+                <line x1="0" y1="80" x2="600" y2="80" stroke="rgba(255,255,255,0.04)"/>
+                <line x1="0" y1="125" x2="600" y2="125" stroke="rgba(255,255,255,0.04)"/>
+                <path d="M 0 145 Q 100 60, 200 105 T 400 45 T 600 20 L 600 170 L 0 170 Z" fill="url(#areaVioletGlow)"/>
+                <path d="M 0 145 Q 100 60, 200 105 T 400 45 T 600 20" fill="none" stroke="#8b5cf6" stroke-width="3"/>
+                <circle cx="200" cy="105" r="4" fill="#ffffff"/>
+                <circle cx="400" cy="45" r="4" fill="#ffffff"/>
+                <circle cx="600" cy="20" r="5" fill="#ffffff"/>
               </svg>
             </div>
 
@@ -346,9 +328,9 @@
   </div>
 
   <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
-  <script src="js/db.js?v=5.0"></script>
-  <script src="js/components.js?v=5.0"></script>
-  <script src="js/dashboard.js?v=5.0"></script>
-  <script src="js/app.js?v=5.0"></script>
+  <script src="js/db.js?v=6.0"></script>
+  <script src="js/components.js?v=6.0"></script>
+  <script src="js/dashboard.js?v=6.0"></script>
+  <script src="js/app.js?v=6.0"></script>
 </body>
 </html>
