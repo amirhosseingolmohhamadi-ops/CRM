@@ -15,11 +15,24 @@ window.PropertyService = {
     return await db.properties.reverse().toArray();
   },
 
+  // دریافت یک ملک بر اساس شناسه
+  async getById(id) {
+    return await db.properties.get(Number(id));
+  },
+
   // افزودن ملک جدید
   async add(propertyData) {
     return await db.properties.add({
       ...propertyData,
       createdAt: new Date().toISOString()
+    });
+  },
+
+  // ویرایش و به‌روزرسانی ملک موجود
+  async update(id, updatedData) {
+    return await db.properties.update(Number(id), {
+      ...updatedData,
+      updatedAt: new Date().toISOString()
     });
   },
 
@@ -36,7 +49,7 @@ window.PropertyService = {
 
   // حذف بر اساس شناسه
   async delete(id) {
-    return await db.properties.delete(id);
+    return await db.properties.delete(Number(id));
   }
 };
 
@@ -58,7 +71,10 @@ async function seedInitialData() {
         buyer: 'دکتر آرشام فرهمند',
         price: '۱۵۵,۰۰۰,۰۰۰,۰۰۰ تومان',
         status: 'امضای نهایی شد',
-        image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80',
+        images: [
+          'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'
+        ],
         createdAt: new Date().toISOString()
       },
       {
@@ -74,7 +90,10 @@ async function seedInitialData() {
         buyer: 'مهندس سهراب پناهی',
         price: '۱۸,۰۰۰,۰۰۰,۰۰۰ تومان رهن',
         status: 'تحویل کلید',
-        image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+        images: [
+          'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80'
+        ],
         createdAt: new Date().toISOString()
       },
       {
@@ -90,7 +109,9 @@ async function seedInitialData() {
         buyer: 'هلدینگ آرمان سازه',
         price: '۲۸۰,۰۰۰,۰۰۰,۰۰۰ تومان',
         status: 'استعلام شهرداری',
-        image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80',
+        images: [
+          'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80'
+        ],
         createdAt: new Date().toISOString()
       },
       {
@@ -106,23 +127,10 @@ async function seedInitialData() {
         buyer: 'خانم مهندس تهرانی',
         price: '۶۸,۰۰۰,۰۰۰,۰۰۰ تومان',
         status: 'پروانه ثبت شد',
-        image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80',
-        createdAt: new Date().toISOString()
-      },
-      {
-        code: 'KR-046',
-        title: 'برج باغ مسکونی، طبقه ۱۸',
-        type: 'فروش',
-        area: 380,
-        rooms: 4,
-        location: 'فرمانیه',
-        address: 'فرمانیه شرقی، خیابان سنبل',
-        ownerName: 'دکتر کیوان صادقی',
-        ownerPhone: '09127778899',
-        buyer: 'دکتر کیوان صادقی',
-        price: '۱۱۰,۰۰۰,۰۰۰,۰۰۰ تومان',
-        status: 'آماده مبایعه‌نامه',
-        image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80',
+        images: [
+          'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80'
+        ],
         createdAt: new Date().toISOString()
       }
     ]);

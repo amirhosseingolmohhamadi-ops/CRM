@@ -90,7 +90,8 @@
     timerTotalSeconds: 0,
     isPrivacyActive: false,
     currentSelectedProperty: null,
-    uploadedImageBase64: '',
+    currentFormImages: [],
+    cardImageIndices: {},
     mockEntities: [
       { id: 'PROP-1049', type: 'ملک', title: 'پنت‌هاوس ۴۵۰ متری الهیه فرشته', targetView: 'properties' },
       { id: 'PROP-1050', type: 'ملک', title: 'ویلای مدرن ۶۵۰ متری شهرک غرب', targetView: 'properties' },
@@ -807,7 +808,7 @@
   };
 
   // =====================================================
-  // 11. Minimal Property Cards Deck & Share Engine
+  // 11. Property Cards Deck: Multi-Image, Edit & Delete
   // =====================================================
   const PropertyCardsEngine = {
     init() {
@@ -838,26 +839,23 @@
         });
       }
 
-      // آپلود فایل عکس دلخواه در مودال
-      const fileInput = document.getElementById('propImageFile');
-      const imgPreview = document.getElementById('propImagePreview');
+      // آپلود چندین عکس همزمان
+      const filesInput = document.getElementById('propImageFiles');
+      if (filesInput && !filesInput.dataset.bound) {
+        filesInput.dataset.bound = "true";
+        filesInput.addEventListener('change', async (e) => {
+          const files = Array.from(e.target.files || []);
+          if (files.length === 0) return;
 
-      if (fileInput && !fileInput.dataset.bound) {
-        fileInput.dataset.bound = "true";
-        fileInput.addEventListener('change', (e) => {
-          const file = e.target.files?.[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-              AppState.uploadedImageBase64 = event.target.result;
-              if (imgPreview) imgPreview.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
+          for (const file of files) {
+            const base64 = await this.readFileAsDataURL(file);
+            AppState.currentFormImages.push(base64);
           }
+          this.renderAlbumPreview();
         });
       }
 
-      // مودال ثبت ملک
+      // باز شدن مودال برای ملک جدید
       const addModal = document.getElementById('addPropertyModal');
       const btnOpenAdd = document.getElementById('btnOpenAddPropertyModal');
       const btnCloseAdd = document.getElementById('btnCloseAddPropertyModal');
@@ -866,6 +864,9 @@
       if (btnOpenAdd && addModal && !btnOpenAdd.dataset.bound) {
         btnOpenAdd.dataset.bound = "true";
         btnOpenAdd.addEventListener('click', () => {
+          this.resetForm();
+          document.getElementById('propModalTitle').textContent = '🏢 ثبت مشخصات فایل ملک';
+          document.getElementById('btnSubmitPropModal').textContent = 'ذخیره و درج در سامانه ✨';
           addModal.style.display = 'flex';
         });
       }
@@ -884,14 +885,17 @@
         });
       }
 
+      // ارسال فرم (ثبت ملک جدید یا ویرایش ملک قبلی)
       if (formNewProp && !formNewProp.dataset.bound) {
         formNewProp.dataset.bound = "true";
         formNewProp.addEventListener('submit', async (e) => {
           e.preventDefault();
 
-          const finalImg = AppState.uploadedImageBase64 || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80';
+          const editId = document.getElementById('propEditId')?.value;
+          const fallbackImages = ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'];
+          const finalImages = AppState.currentFormImages.length > 0 ? AppState.currentFormImages : fallbackImages;
 
-          const newPropData = {
+          const propData = {
             title: document.getElementById('propTitle')?.value.trim() || 'فایل ملکی جدید',
             code: document.getElementById('propCode')?.value.trim() || `#KR-${Math.floor(100 + Math.random() * 900)}`,
             area: document.getElementById('propArea')?.value || '۲۰۰',
@@ -901,26 +905,107 @@
             ownerPhone: document.getElementById('propPhone')?.value.trim() || '---',
             location: document.getElementById('propAddress')?.value.trim() || 'تهران',
             address: document.getElementById('propAddress')?.value.trim() || 'تهران',
-            buyer: 'ثبت جدید در سامانه',
+            buyer: 'ثبت در سامانه',
             status: 'آماده معامله',
-            image: finalImg
+            images: finalImages,
+            image: finalImages[0]
           };
 
           if (window.PropertyService) {
-            await window.PropertyService.add(newPropData);
+            if (editId) {
+              await window.PropertyService.update(editId, propData);
+              ToastManager.show('مشخصات ملک با موفقیت ویرایش شد ✏️', 'success');
+            } else {
+              await window.PropertyService.add(propData);
+              ToastManager.show('فایل ملک جدید همراه با آلبوم عکس ثبت شد ✨', 'success');
+            }
           }
 
-          formNewProp.reset();
-          AppState.uploadedImageBase64 = '';
-          if (imgPreview) imgPreview.src = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80';
+          this.resetForm();
           if (addModal) addModal.style.display = 'none';
-          ToastManager.show('فایل جدید با عکس اختصاصی در دیتابیس ثبت شد ✨', 'success');
-
           loadPropertiesData();
         });
       }
 
       this.initShareModal();
+    },
+
+    readFileAsDataURL(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.readAsDataURL(file);
+      });
+    },
+
+    renderAlbumPreview() {
+      const container = document.getElementById('propImagesAlbumPreview');
+      if (!container) return;
+
+      if (AppState.currentFormImages.length === 0) {
+        container.innerHTML = `<span style="font-size: 0.74rem; color: var(--ink-secondary); margin: auto;">عکسی انتخاب نشده است.</span>`;
+        return;
+      }
+
+      container.innerHTML = AppState.currentFormImages.map((src, i) => `
+        <div style="position: relative; width: 68px; height: 55px; flex-shrink: 0; border-radius: 6px; overflow: hidden; border: 1.5px solid var(--border-dark);">
+          <img src="${src}" style="width: 100%; height: 100%; object-fit: cover;">
+          <button type="button" class="btn-remove-preview-img" data-idx="${i}" style="position: absolute; top: 2px; right: 2px; background: rgba(220,38,38,0.85); color: #fff; border: none; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.btn-remove-preview-img').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.dataset.idx, 10);
+          AppState.currentFormImages.splice(idx, 1);
+          this.renderAlbumPreview();
+        });
+      });
+    },
+
+    resetForm() {
+      const form = document.getElementById('formNewProperty');
+      if (form) form.reset();
+      document.getElementById('propEditId').value = '';
+      AppState.currentFormImages = [];
+      this.renderAlbumPreview();
+    },
+
+    openEditModal(property) {
+      this.resetForm();
+      const addModal = document.getElementById('addPropertyModal');
+      if (!addModal) return;
+
+      document.getElementById('propEditId').value = property.id || '';
+      document.getElementById('propTitle').value = property.title || '';
+      document.getElementById('propCode').value = property.code || '';
+      document.getElementById('propArea').value = property.area || '';
+      document.getElementById('propRooms').value = property.rooms || '';
+      document.getElementById('propPrice').value = property.price || '';
+      document.getElementById('propOwner').value = property.ownerName !== 'محرمانه' ? (property.ownerName || '') : '';
+      document.getElementById('propPhone').value = property.ownerPhone !== '---' ? (property.ownerPhone || '') : '';
+      document.getElementById('propAddress').value = property.address || property.location || '';
+
+      const imgs = property.images && property.images.length > 0 
+        ? property.images 
+        : (property.image ? [property.image] : []);
+      AppState.currentFormImages = [...imgs];
+      this.renderAlbumPreview();
+
+      document.getElementById('propModalTitle').textContent = `✏️ ویرایش ملک: ${property.title}`;
+      document.getElementById('btnSubmitPropModal').textContent = 'ذخیره تغییرات ملک 💾';
+
+      addModal.style.display = 'flex';
+    },
+
+    async confirmDelete(property) {
+      if (confirm(`آیا از حذف کامل ملک "${property.title}" از دیتابیس سامانه اطمینان دارید؟`)) {
+        if (window.PropertyService && property.id) {
+          await window.PropertyService.delete(property.id);
+          ToastManager.show(`ملک ${property.title} با موفقیت حذف شد 🗑️`, 'warning');
+          loadPropertiesData();
+        }
+      }
     },
 
     initShareModal() {
@@ -969,7 +1054,8 @@
       const shareModal = document.getElementById('sharePropertyModal');
       if (!shareModal) return;
 
-      document.getElementById('sharePreviewImg').src = property.image || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80';
+      const mainImg = (property.images && property.images[0]) || property.image || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80';
+      document.getElementById('sharePreviewImg').src = mainImg;
       document.getElementById('sharePreviewTitle').textContent = property.title || 'ملک لوکس';
       document.getElementById('sharePreviewSpecs').textContent = `📐 ${property.area || '۳۲۰'} متر • 🛏 ${property.rooms || '۳'} خواب`;
       document.getElementById('sharePreviewPrice').textContent = property.price || 'توافقی';
@@ -1022,19 +1108,42 @@
 
       container.innerHTML = properties.map((item, idx) => {
         const blurStyle = AppState.isPrivacyActive ? 'filter: blur(5px); opacity: 0.3;' : 'filter: none; opacity: 1;';
+        
+        // آرایه تصاویر ملک
+        const imagesList = (item.images && item.images.length > 0) 
+          ? item.images 
+          : (item.image ? [item.image] : ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80']);
+        
+        const currentIdx = AppState.cardImageIndices[item.id] || 0;
+        const activeImg = imagesList[currentIdx % imagesList.length];
 
         return `
           <div class="stamp-kpi-card" style="display: flex; flex-direction: column; padding: 0; overflow: hidden; background: var(--paper-card); border: 1.5px solid var(--border-dark); border-radius: var(--radius-sm); box-shadow: 2px 2px 0px var(--shadow-color); transition: transform 0.15s ease;">
             
-            <!-- تصویر تمیز و نشان کد -->
+            <!-- تصویر، اسلایدر چندتایی و نشان کد -->
             <div style="position: relative; width: 100%; height: 165px; background: #1a1a1a; overflow: hidden;">
-              <img src="${item.image || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'}" 
+              <img id="cardImg-${item.id}" src="${activeImg}" 
                    alt="${item.title || 'ملک'}" 
-                   style="width: 100%; height: 100%; object-fit: cover;">
+                   style="width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s;">
               
-              <span style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.75); color: #fff; padding: 2px 7px; border-radius: 4px; font-size: 0.68rem; font-family: monospace; font-weight: 800;">
+              <span style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.75); color: #fff; padding: 2px 7px; border-radius: 4px; font-size: 0.68rem; font-family: monospace; font-weight: 800; z-index: 2;">
                 ${item.code || item.id || 'PROP-#'}
               </span>
+
+              <!-- نشانگر و دکمه‌های اسلایدر چند تصویر -->
+              ${imagesList.length > 1 ? `
+                <div style="position: absolute; bottom: 8px; left: 8px; display: flex; gap: 4px; z-index: 2;">
+                  <button class="btn-prev-card-img story-btn" data-id="${item.id}" style="padding: 2px 6px; font-size: 0.65rem; background: rgba(0,0,0,0.7); color: #fff; border-color: rgba(255,255,255,0.3);">‹</button>
+                  <span style="background: rgba(0,0,0,0.7); color: #fff; font-size: 0.62rem; padding: 2px 5px; border-radius: 3px; font-weight: bold;">${(currentIdx % imagesList.length) + 1}/${imagesList.length}</span>
+                  <button class="btn-next-card-img story-btn" data-id="${item.id}" style="padding: 2px 6px; font-size: 0.65rem; background: rgba(0,0,0,0.7); color: #fff; border-color: rgba(255,255,255,0.3);">›</button>
+                </div>
+              ` : ''}
+
+              <!-- دکمه‌های سریع ویرایش و حذف روی کادر تصویر -->
+              <div style="position: absolute; top: 8px; left: 8px; display: flex; gap: 4px; z-index: 2;">
+                <button class="btn-card-edit" data-idx="${idx}" title="ویرایش ملک" style="background: rgba(0,0,0,0.75); color: #facc15; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; width: 24px; height: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.72rem;">✏️</button>
+                <button class="btn-card-delete" data-idx="${idx}" title="حذف ملک" style="background: rgba(0,0,0,0.75); color: #f87171; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; width: 24px; height: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.72rem;">🗑️</button>
+              </div>
             </div>
 
             <!-- مشخصات مینیمال و خوانا -->
@@ -1054,7 +1163,7 @@
                 ${item.price || 'توافقی'}
               </div>
 
-              <!-- کادر فشرده و مینیمال اطلاعات محرمانه -->
+              <!-- کادر فشرده اطلاعات محرمانه -->
               <div style="background: rgba(0, 0, 0, 0.025); padding: 5px 8px; border-radius: 4px; border: 1px dashed var(--paper-border); font-size: 0.7rem; margin-top: 2px;">
                 <div class="card-private-data" style="${blurStyle} transition: filter 0.2s, opacity 0.2s; color: var(--ink-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                   <strong>مالک:</strong> ${item.ownerName || 'ثبت نشده'} (${item.ownerPhone || '---'})
@@ -1082,13 +1191,58 @@
         `;
       }).join('');
 
+      // کنترل دکمه‌های اسلایدر تصاویر کارت‌ها
+      container.querySelectorAll('.btn-next-card-img').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          const prop = properties.find(p => String(p.id) === String(id));
+          if (prop && prop.images && prop.images.length > 1) {
+            AppState.cardImageIndices[id] = (AppState.cardImageIndices[id] || 0) + 1;
+            this.renderCards(properties);
+          }
+        });
+      });
+
+      container.querySelectorAll('.btn-prev-card-img').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          const prop = properties.find(p => String(p.id) === String(id));
+          if (prop && prop.images && prop.images.length > 1) {
+            const cur = AppState.cardImageIndices[id] || 0;
+            AppState.cardImageIndices[id] = (cur - 1 + prop.images.length);
+            this.renderCards(properties);
+          }
+        });
+      });
+
+      // اتصال دکمه ویرایش
+      container.querySelectorAll('.btn-card-edit').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const idx = parseInt(btn.dataset.idx, 10);
+          const prop = properties[idx];
+          if (prop) this.openEditModal(prop);
+        });
+      });
+
+      // اتصال دکمه حذف
+      container.querySelectorAll('.btn-card-delete').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const idx = parseInt(btn.dataset.idx, 10);
+          const prop = properties[idx];
+          if (prop) this.confirmDelete(prop);
+        });
+      });
+
+      // اتصال دکمه ارسال / پرزنت
       container.querySelectorAll('.btn-trigger-share').forEach(btn => {
         btn.addEventListener('click', () => {
           const index = parseInt(btn.dataset.index, 10);
           const property = properties[index];
-          if (property) {
-            PropertyCardsEngine.openShareModal(property);
-          }
+          if (property) this.openShareModal(property);
         });
       });
     }
